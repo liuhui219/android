@@ -22,6 +22,11 @@ import {
   Easing,
   TouchableHighlight,
 } from 'react-native';
+import Workflow from './Workflow';
+import Assetm from './Assetm';
+import Bxm from './Bxm';
+import qus from './qus';
+import Attendancem from './Attendancem';
 import Netinfo from './Netinfo';
 import Home from './Home';
 import FacebookTabBar from './FacebookTabBar';
@@ -36,7 +41,6 @@ import Application from './Application';
 import Approval from './Approval';
 import Operation from './Operation';
 import Token from './Token';
-import qus from './qus';
 import leave from './leave';
 import business from './business';
 import out from './out';
@@ -56,9 +60,7 @@ import {
 import Centrifuge from 'centrifuge'
 import SockJS from 'sockjs-client/dist/sockjs.min'
 
-
-
-
+var isstate = true;
 
 
 export default class FacebookExample extends Component {
@@ -66,8 +68,8 @@ export default class FacebookExample extends Component {
 		super(props);
         BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
 		this.state = {
-			tabNames: ['Ê∂àÊÅØ', 'ÈÄöËÆØÂΩï', 'Â∫îÁî®',  'ÊàëÁöÑ'],
-			Barleft: 'Ê∂àÊÅØ',
+			tabNames: ['œ˚œ¢', 'Õ®—∂¬º', '”¶”√',  'Œ“µƒ'],
+			Barleft: 'œ˚œ¢',
 			selectedTab:'home',
 			isshow:false,
 			bars:'light-content',
@@ -80,11 +82,11 @@ export default class FacebookExample extends Component {
 			bot2: new Animated.Value(-120),
 			bot3: new Animated.Value(-120),
 			bot4: new Animated.Value(-120),
-      bot5: new Animated.Value(-120),
-      bot6: new Animated.Value(-120),
-      bot7: new Animated.Value(-120),
-      bot8: new Animated.Value(-120),
-			weekday:['Êó•','‰∏Ä','‰∫å','‰∏â','Âõõ','‰∫î','ÂÖ≠'],
+			bot5: new Animated.Value(-120),
+			bot6: new Animated.Value(-120),
+			bot7: new Animated.Value(-120),
+			bot8: new Animated.Value(-120),
+			weekday:['»’','“ª','∂˛','»˝','Àƒ','ŒÂ','¡˘'],
 			bgc:'#4385f4',
 			isshows:false,
 			infost:'',
@@ -94,22 +96,149 @@ export default class FacebookExample extends Component {
 			Datas:{},
 			images:null,
 			infos:'',
+			badgeNum:0,
 			times:'',
+			ywCount:0,
+			xxCount:0,
+			bgCount:0,
+			wqCount:0,
+			Contents:'',
 			weathers:false,
+			appState: AppState.currentState,
       reloadsd:true,
       appState:AppState.currentState,
       translucent:true,
+      NUMS:0,
+      NUMS_A:0,
+      NUMS_B:0,
+
 		};
 	}
 
 
-  componentDidMount() {
-		this.location();
+    componentDidMount() {
+
+	 this.location();
+
 
 	}
+
+	_onNotification(notification){
+	}
+
+	componentWillMount() {
+		var that = this;
+      var { navigator } = this.props;
+	  PushNotification.configure({
+			  onNotification: this._onNotification.bind(this),
+		});
+	  global.centrifuge = new Centrifuge({
+		   url: PUSHDATA.url,
+		   user: PUSHDATA.user,
+		   timestamp: String(PUSHDATA.timestamp),
+		   token: PUSHDATA.token,
+		   sockJS: SockJS
+	   });
+	   centrifuge.connect();
+	   centrifuge.on('connect', function(context) {
+		   console.log(context);
+		});
+		 centrifuge.on('disconnect', function(context) {
+
+				console.log("disconnect:",context)
+		   });
+		   centrifuge.on('error', function(error) {
+
+				console.log("error:",error)
+		   });
+
+	   centrifuge.subscribe("Index_"+data.data.cid, function(datas) {
+
+              
+        var all_totals = 0;
+		if(datas.data.user == data.data.uid){
+			  isstate = true;
+              //alert(JSON.stringify(datas))
+        if(datas.data.msg.unreadData.bgCount){
+           all_totals = Number(datas.data.msg.unreadData.bgCount) + Number(that.state.NUMS) + Number(that.state.NUMS_B);
+           if(all_totals>=100){
+             that.setState({badgeNum:'99+'});
+           }else{
+             that.setState({badgeNum:all_totals});
+           }
+        }if(datas.data.msg.unreadData.ywCount){
+           all_totals = Number(datas.data.msg.unreadData.ywCount) + Number(that.state.NUMS) + Number(that.state.NUMS_A);
+           if(all_totals>=100){
+             that.setState({badgeNum:'99+'});
+           }else{
+             that.setState({badgeNum:all_totals});
+           }
+        } if(datas.data.msg.unreadData.xxCount){
+           all_totals = Number(datas.data.msg.unreadData.xxCount) + Number(that.state.NUMS_B) + Number(that.state.NUMS_A);
+           if(all_totals>=100){
+             that.setState({badgeNum:'99+'});
+           }else{
+             that.setState({badgeNum:all_totals});
+           }
+        }
+		that.setState({bgCount:datas.data.msg.unreadData.bgCount,ywCount:datas.data.msg.unreadData.ywCount,xxCount:datas.data.msg.unreadData.xxCount,Contents:datas.data.msg.content,});
+        if(datas.data.msg.nopushios == 0){
+        
+			  PushNotification.localNotification({
+					id: new Date().getTime(),
+					ticker: "My Notification Ticker",
+					autoCancel: true,
+					largeIcon: "ic_launcher",
+					smallIcon: "ic_notification",
+					bigText: "My big text that will be shown when notification is expanded",
+					color: "blue",
+					vibrate: true,
+					vibration: 300,
+					tag: 'some_tag',
+					group: "group",
+					ongoing: false,
+					title: datas.data.msg.title,
+					message: datas.data.msg.content,
+					playSound: true,
+					soundName: 'default'
+				});
+			  }
+			}
+				PushNotification.onNotification=function (notification) {
+
+					 if(datas.data.msg.type == 3 ){
+
+						 navigator.push({
+							name: 'Approval',
+							component: Approval
+						 })
+					 }
+					 if(datas.data.msg.type == 2){
+
+						 navigator.push({
+							name: 'Operation',
+							component: Operation
+						 })
+					 }
+					 if(datas.data.msg.type == 1){
+
+						 navigator.push({
+							name: 'News',
+							component: News
+						 })
+					 }
+
+
+				  };
+
+	   });
+    }
+
+
+
 	componentWillUnmount() {
 
-	¬† ¬† BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
+	  BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
 
 	}
 
@@ -119,6 +248,7 @@ export default class FacebookExample extends Component {
 		var that = this;
 		Geolocation.getCurrentPosition()
               .then(data => {
+
 				  if(data.country == undefined){
 					  this.setState({
 						  statua: true,
@@ -152,79 +282,79 @@ export default class FacebookExample extends Component {
               console.log(responseData)
               this.setState({Datas:responseData.results[0],times:responseData.results[0].last_update.slice(11,16),weathers:true,reloadsd:true,});
               if(responseData.results[0].now['code'] == 0){
-                 this.setState({images:require('./imgs/weather/0.png'),infos:'Êô¥'})
+                 this.setState({images:require('./imgs/weather/0.png'),infos:'«Á'})
               }else if(responseData.results[0].now['code'] == 1){
-              	 this.setState({images:require('./imgs/weather/1.png'),infos:'Êô¥'})
+              	 this.setState({images:require('./imgs/weather/1.png'),infos:'«Á'})
               }else if(responseData.results[0].now['code'] == 2){
-              	 this.setState({images:require('./imgs/weather/2.png'),infos:'Êô¥'})
+              	 this.setState({images:require('./imgs/weather/2.png'),infos:'«Á'})
               }else if(responseData.results[0].now['code'] == 3){
-              	 this.setState({images:require('./imgs/weather/3.png'),infos:'Êô¥'})
+              	 this.setState({images:require('./imgs/weather/3.png'),infos:'«Á'})
               }else if(responseData.results[0].now['code'] == 4){
-              	 this.setState({images:require('./imgs/weather/4.png'),infos:'Â§ö‰∫ë'})
+              	 this.setState({images:require('./imgs/weather/4.png'),infos:'∂‡‘∆'})
               }else if(responseData.results[0].now['code'] == 5){
-              	 this.setState({images:require('./imgs/weather/5.png'),infos:'Êô¥ËΩ¨Â§ö‰∫ë'})
+              	 this.setState({images:require('./imgs/weather/5.png'),infos:'«Á◊™∂‡‘∆'})
               }else if(responseData.results[0].now['code'] == 6){
-              	 this.setState({images:require('./imgs/weather/6.png'),infos:'Êô¥ËΩ¨Â§ö‰∫ë'})
+              	 this.setState({images:require('./imgs/weather/6.png'),infos:'«Á◊™∂‡‘∆'})
               }else if(responseData.results[0].now['code'] == 7){
-              	 this.setState({images:require('./imgs/weather/7.png'),infos:'Â§ßÈÉ®Â§ö‰∫ë'})
+              	 this.setState({images:require('./imgs/weather/7.png'),infos:'¥Û≤ø∂‡‘∆'})
               }else if(responseData.results[0].now['code'] == 8){
-              	 this.setState({images:require('./imgs/weather/8.png'),infos:'Â§ßÈÉ®Â§ö‰∫ë'})
+              	 this.setState({images:require('./imgs/weather/8.png'),infos:'¥Û≤ø∂‡‘∆'})
               }else if(responseData.results[0].now['code'] == 9){
-              	 this.setState({images:require('./imgs/weather/9.png'),infos:'Èò¥'})
+              	 this.setState({images:require('./imgs/weather/9.png'),infos:'“ı'})
               }else if(responseData.results[0].now['code'] == 10){
-              	 this.setState({images:require('./imgs/weather/10.png'),infos:'ÈòµÈõ®'})
+              	 this.setState({images:require('./imgs/weather/10.png'),infos:'’Û”Í'})
               }else if(responseData.results[0].now['code'] == 11){
-              	 this.setState({images:require('./imgs/weather/11.png'),infos:'Èõ∑ÈòµÈõ®'})
+              	 this.setState({images:require('./imgs/weather/11.png'),infos:'¿◊’Û”Í'})
               }else if(responseData.results[0].now['code'] == 12){
-              	 this.setState({images:require('./imgs/weather/12.png'),infos:'Èõ∑ÈòµÈõ®‰º¥ÊúâÂÜ∞Èõπ'})
+              	 this.setState({images:require('./imgs/weather/12.png'),infos:'¿◊’Û”Í∞È”–±˘±¢'})
               }else if(responseData.results[0].now['code'] == 13){
-              	 this.setState({images:require('./imgs/weather/13.png'),infos:'Â∞èÈõ®'})
+              	 this.setState({images:require('./imgs/weather/13.png'),infos:'–°”Í'})
               }else if(responseData.results[0].now['code'] == 14){
-              	 this.setState({images:require('./imgs/weather/14.png'),infos:'‰∏≠Èõ®'})
+              	 this.setState({images:require('./imgs/weather/14.png'),infos:'÷–”Í'})
               }else if(responseData.results[0].now['code'] == 15){
-              	 this.setState({images:require('./imgs/weather/15.png'),infos:'Â§ßÈõ®'})
+              	 this.setState({images:require('./imgs/weather/15.png'),infos:'¥Û”Í'})
               }else if(responseData.results[0].now['code'] == 16){
-              	 this.setState({images:require('./imgs/weather/16.png'),infos:'Êö¥Èõ®'})
+              	 this.setState({images:require('./imgs/weather/16.png'),infos:'±©”Í'})
               }else if(responseData.results[0].now['code'] == 17){
-              	 this.setState({images:require('./imgs/weather/17.png'),infos:'Â§ßÊö¥Èõ®'})
+              	 this.setState({images:require('./imgs/weather/17.png'),infos:'¥Û±©”Í'})
               }else if(responseData.results[0].now['code'] == 18){
-              	 this.setState({images:require('./imgs/weather/18.png'),infos:'ÁâπÂ§ßÊö¥Èõ®'})
+              	 this.setState({images:require('./imgs/weather/18.png'),infos:'Ãÿ¥Û±©”Í'})
               }else if(responseData.results[0].now['code'] == 19){
-              	 this.setState({images:require('./imgs/weather/19.png'),infos:'ÂÜªÈõ®'})
+              	 this.setState({images:require('./imgs/weather/19.png'),infos:'∂≥”Í'})
               }else if(responseData.results[0].now['code'] ==20){
-              	 this.setState({images:require('./imgs/weather/20.png'),infos:'Èõ®Â§πÈõ™'})
+              	 this.setState({images:require('./imgs/weather/20.png'),infos:'”Íº–—©'})
               }else if(responseData.results[0].now['code'] == 21){
-              	 this.setState({images:require('./imgs/weather/21.png'),infos:'ÈòµÈõ™'})
+              	 this.setState({images:require('./imgs/weather/21.png'),infos:'’Û—©'})
               }else if(responseData.results[0].now['code'] == 22){
-              	 this.setState({images:require('./imgs/weather/22.png'),infos:'Â∞èÈõ™'})
+              	 this.setState({images:require('./imgs/weather/22.png'),infos:'–°—©'})
               }else if(responseData.results[0].now['code'] == 23){
-              	 this.setState({images:require('./imgs/weather/23.png'),infos:'‰∏≠Èõ™'})
+              	 this.setState({images:require('./imgs/weather/23.png'),infos:'÷–—©'})
               }else if(responseData.results[0].now['code'] == 24){
-              	 this.setState({images:require('./imgs/weather/24.png'),infos:'Â§ßÈõ™'})
+              	 this.setState({images:require('./imgs/weather/24.png'),infos:'¥Û—©'})
               }else if(responseData.results[0].now['code'] == 25){
-              	 this.setState({images:require('./imgs/weather/25.png'),infos:'Êö¥Èõ™'})
+              	 this.setState({images:require('./imgs/weather/25.png'),infos:'±©—©'})
               }else if(responseData.results[0].now['code'] == 26){
-              	 this.setState({images:require('./imgs/weather/26.png'),infos:'ÊµÆÂ∞ò'})
+              	 this.setState({images:require('./imgs/weather/26.png'),infos:'∏°≥æ'})
               }else if(responseData.results[0].now['code'] == 27){
-              	 this.setState({images:require('./imgs/weather/27.png'),infos:'Êâ¨Ê≤ô'})
+              	 this.setState({images:require('./imgs/weather/27.png'),infos:'—Ô…≥'})
               }else if(responseData.results[0].now['code'] == 28){
-              	 this.setState({images:require('./imgs/weather/28.png'),infos:'Ê≤ôÂ∞òÊö¥'})
+              	 this.setState({images:require('./imgs/weather/28.png'),infos:'…≥≥æ±©'})
               }else if(responseData.results[0].now['code'] == 29){
-              	 this.setState({images:require('./imgs/weather/29.png'),infos:'Âº∫Ê≤ôÂ∞òÊö¥'})
+              	 this.setState({images:require('./imgs/weather/29.png'),infos:'«ø…≥≥æ±©'})
               }else if(responseData.results[0].now['code'] == 30){
-              	 this.setState({images:require('./imgs/weather/30.png'),infos:'Èõæ'})
+              	 this.setState({images:require('./imgs/weather/30.png'),infos:'ŒÌ'})
               }else if(responseData.results[0].now['code'] == 31){
-              	 this.setState({images:require('./imgs/weather/31.png'),infos:'Èúæ'})
+              	 this.setState({images:require('./imgs/weather/31.png'),infos:'ˆ≤'})
               }else if(responseData.results[0].now['code'] == 32){
-              	 this.setState({images:require('./imgs/weather/32.png'),infos:'È£é'})
+              	 this.setState({images:require('./imgs/weather/32.png'),infos:'∑Á'})
               }else if(responseData.results[0].now['code'] == 33){
-              	 this.setState({images:require('./imgs/weather/33.png'),infos:'Â§ßÈ£é'})
+              	 this.setState({images:require('./imgs/weather/33.png'),infos:'¥Û∑Á'})
               }else if(responseData.results[0].now['code'] == 34){
-              	 this.setState({images:require('./imgs/weather/34.png'),infos:'È£ìÈ£é'})
+              	 this.setState({images:require('./imgs/weather/34.png'),infos:'Ï´∑Á'})
               }else if(responseData.results[0].now['code'] == 35){
-              	 this.setState({images:require('./imgs/weather/35.png'),infos:'ÁÉ≠Â∏¶È£éÊö¥'})
+              	 this.setState({images:require('./imgs/weather/35.png'),infos:'»»¥¯∑Á±©'})
               }else if(responseData.results[0].now['code'] == 36){
-              	 this.setState({images:require('./imgs/weather/36.png'),infos:'ÈæôÂç∑È£é'})
+              	 this.setState({images:require('./imgs/weather/36.png'),infos:'¡˙æÌ∑Á'})
               }
 		  })
 		  .catch((error) => {
@@ -279,13 +409,13 @@ export default class FacebookExample extends Component {
 
     onBackAndroid = () => {
 
-¬† ¬† ¬† ¬† if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
-¬† ¬† ¬† ¬† ¬†   return false;
-¬† ¬† ¬† ¬† }
+       if (this.lastBackPressed && this.lastBackPressed + 2000 >= Date.now()) {
+            return false;
+        }
 
 		this.lastBackPressed = Date.now();
 
-		ToastAndroid.show('ÂÜçÊåâ‰∏ÄÊ¨°ÈÄÄÂá∫Â∫îÁî®', ToastAndroid.SHORT);
+		ToastAndroid.show('‘Ÿ∞¥“ª¥ŒÕÀ≥ˆ”¶”√', ToastAndroid.SHORT);
 
 		return true;
 
@@ -472,7 +602,7 @@ export default class FacebookExample extends Component {
     translucent:true,
       isshow: true,
       bars:'default',
-      day:'ÊòüÊúü'+this.state.weekday[new Date().getDay()],
+      day:'–«∆⁄'+this.state.weekday[new Date().getDay()],
       date:this.Gdate(new Date().getDate()),
       yearM:this.Gdate(new Date().getMonth()+1)+'/'+ new Date().getFullYear(),
     });
@@ -564,6 +694,48 @@ export default class FacebookExample extends Component {
     ]).start();
   }
 
+
+
+  totalnums(data,booleans){ 
+    var all_total = Number(data) + Number(this.state.NUMS_A) + Number(this.state.NUMS_B);
+    this.setState({NUMS:data,xxCount:data})
+	  var isstate = booleans;
+	  if(isstate){
+		  if(all_total>=100){
+			  this.setState({badgeNum:'99+'});
+		  }else{
+			  this.setState({badgeNum:all_total});
+		  }
+		 isstate = false;
+	  }
+  }
+  totalnums_a(data,booleans){
+    var all_total = Number(data) + Number(this.state.NUMS) + Number(this.state.NUMS_B);
+    this.setState({NUMS_A:data,bgCount:data,})
+	  var isstate = booleans;
+	  if(isstate){
+		  if(all_total>=100){
+			  this.setState({badgeNum:'99+'});
+		  }else{
+			  this.setState({badgeNum:all_total});
+		  }
+		 isstate = false;
+	  }
+  }
+  totalnums_b(data,booleans){
+    var all_total = Number(data) + Number(this.state.NUMS_A) + Number(this.state.NUMS);
+    this.setState({NUMS_B:data,ywCount:data,})
+	  var isstate = booleans;
+	  if(isstate){
+		  if(all_total>=100){
+			  this.setState({badgeNum:'99+'});
+		  }else{
+			  this.setState({badgeNum:all_total});
+		  }
+		 isstate = false;
+	  }
+  }
+
   render() {
 	  let tabNames = this.state.tabNames;
 	  let Barleft = this.state.Barleft;
@@ -583,18 +755,24 @@ export default class FacebookExample extends Component {
 	            <TabNavigator tabBarStyle={{ height: 52,}} sceneStyle={{backgroundColor:'#fff'}}>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'home'}
-					title="Ê∂àÊÅØ"
+					title="œ˚œ¢"
 					renderIcon={() => <Image source={require('./imgs/newsx.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/news.png')} />}
 					selectedTitleStyle={{color:'#4385f4'}}
 					titleStyle={{color:'#aaa'}}
+					renderBadge={() =>
+						this.state.badgeNum === 0 ? null:
+						<View style={{alignItems:'center',justifyContent:'center',backgroundColor:'#F53B5C', borderRadius: 100, borderColor: '#d6d7da',paddingLeft:5,paddingRight:5,marginTop:8}}>
+						  <Text style={{color: '#fff',fontSize:12}}>{this.state.badgeNum}</Text>
+						</View>
+					  }
                     allowFontScaling={false}
 					onPress={() => this.setState({ selectedTab: 'home' })}>
-					<Home {...this.props}/>
+					<Home Contents={this.state.Contents} xxCount={this.state.xxCount} ywCount={this.state.ywCount} bgCount={this.state.bgCount}  totalnums={this.totalnums.bind(this)} totalnums_a={this.totalnums_a.bind(this)} totalnums_b={this.totalnums_b.bind(this)} {...this.props}/>
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Contacts'}
-					title="ÈÄöËÆØÂΩï"
+					title="Õ®—∂¬º"
 					renderIcon={() => <Image source={require('./imgs/contacts.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/contact.png')} />}
 					selectedTitleStyle={{color:'#4385f4'}}
@@ -610,18 +788,19 @@ export default class FacebookExample extends Component {
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Application'}
-					title="Â∫îÁî®"
+					title="”¶”√"
 					renderIcon={() => <Image source={require('./imgs/keypad.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/keypads.png')} />}
                     selectedTitleStyle={{color:'#4385f4'}}
 					titleStyle={{color:'#aaa'}}
+
                     allowFontScaling={false}
 					onPress={() => this.setState({ selectedTab: 'Application' })}>
 					<Application {...this.props}/>
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Setting'}
-					title="ÊàëÁöÑ"
+					title="Œ“µƒ"
 					renderIcon={() => <Image source={require('./imgs/person.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/persons.png')} />}
                     selectedTitleStyle={{color:'#4385f4'}}
@@ -651,14 +830,14 @@ export default class FacebookExample extends Component {
                      {this.state.weathers ? <TouchableHighlight onPress={this.reloads.bind(this)} underlayColor='transparent' activeOpacity = {1} style={{position:'absolute',top:60,right:20,alignItems:'center',flexDirection:'column'}}>
 	                     <View style={{alignItems:'center',flexDirection:'column'}}>
 
-	                            <Text style={{fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.times}Êõ¥Êñ∞</Text>
+	                            <Text style={{fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.times}∏¸–¬</Text>
 	                            {this.state.reloadsd ? <Icon name="ios-refresh-outline" color="#666"size={30}  /> : <ActivityIndicator style={{marginTop:5}} color="#666"/>}
 
 	                     </View>
                      </TouchableHighlight> : null}
                      {this.state.weathers ? <View style={{marginTop:20,flexDirection:'row',marginRight:18,width:Dimensions.get('window').width}}>
                          <View style={{flexDirection:'column',flex:1,alignItems:'flex-start',justifyContent:'flex-start',position:'absolute',top:10,left:15}}>
-                            <Text style={{marginBottom:5,fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>ÊâÄÂú®ÂüéÂ∏Ç</Text>
+                            <Text style={{marginBottom:5,fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>À˘‘⁄≥« –</Text>
                             <Text style={{fontSize:16,fontFamily:'CourierNewPSMT',}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.location['name']}</Text>
                          </View>
                          <View style={{alignItems:'center',flexDirection:'column',justifyContent:'center',width:Dimensions.get('window').width}}>
@@ -666,7 +845,7 @@ export default class FacebookExample extends Component {
                                 <Image source={this.state.images} style={{width: 80, height: 80,}} />
                             </View>
                             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center', }}>
-                                <Text style={{fontSize:24,color:'#666'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.now['temperature']}¬∞ / {this.state.Datas.now['text']}</Text>
+                                <Text style={{fontSize:24,color:'#666'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.now['temperature']}°„ / {this.state.Datas.now['text']}</Text>
 
                             </View>
                          </View>
@@ -677,7 +856,7 @@ export default class FacebookExample extends Component {
                      {this.state.weathers ? <View style={{alignItems:'center',marginTop:10}}>
                        <TouchableHighlight onPress={this.ck.bind(this)} underlayColor='transparent' activeOpacity = {1}>
                         <View style={{alignItems:'center',}}>
-                          <Text style={{color:'#666',fontSize:12,}} allowFontScaling={false} adjustsFontSizeToFit={false}>Êü•ÁúãËØ¶ÊÉÖ></Text>
+                          <Text style={{color:'#666',fontSize:12,}} allowFontScaling={false} adjustsFontSizeToFit={false}>≤Èø¥œÍ«È></Text>
                         </View>
                         </TouchableHighlight>
                      </View> : null}
@@ -689,7 +868,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/rc.png')} style={{width: 26, height: 26,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      Êñ∞Âª∫Êó•Á®ã
+							      –¬Ω®»’≥Ã
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -702,7 +881,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/JB.png')} style={{width: 34, height: 34,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      Âä†Áè≠Áî≥ËØ∑
+							      º”∞‡…Í«Î
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -715,7 +894,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/jia.png')} style={{width: 34, height: 34,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      ËØ∑ÂÅáÁî≥ËØ∑
+							      «ÎºŸ…Í«Î
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -728,7 +907,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/bx.png')} style={{width: 30, height: 30,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      Êä•ÈîÄÁî≥ËØ∑
+							      ±®œ˙…Í«Î
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -741,7 +920,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/out.png')} style={{width: 38, height: 38,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      Â§ñÂá∫Áî≥ËØ∑
+							      Õ‚≥ˆ…Í«Î
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -754,7 +933,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/bgsq.png')} style={{width: 34, height: 34,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   ÂäûÂÖ¨Áî®ÂìÅÁî≥ËØ∑
+                   ∞Ïπ´”√∆∑…Í«Î
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -767,7 +946,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/chuc.png')} style={{width: 30, height: 30,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   Âá∫Â∑ÆÁî≥ËØ∑
+                   ≥ˆ≤Ó…Í«Î
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -780,7 +959,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/bc.png')} style={{width: 32, height: 32,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   Ë°•Âç°Áî≥ËØ∑
+                   ≤πø®…Í«Î
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -791,7 +970,6 @@ export default class FacebookExample extends Component {
 
 
 			      </Animated.View> : null}
-
 			   </View>
 
 

@@ -20,7 +20,9 @@ import {
 } from 'react-native';
 import SelectPoeple from './SelectPoeple';
 import Icon from 'react-native-vector-icons/Ionicons';
+import Picker from 'react-native-picker';
 var dataImpor = [];
+var SHRS=[];
 export default class Productionc extends Component {
 
     constructor(props) {
@@ -53,6 +55,12 @@ export default class Productionc extends Component {
 			loaded:false,
 			loadedst:false,
 			url:'',
+			SHR:[],
+			SHRS:[],
+			shid:'',
+			shows:false,
+			poepleName:'',
+			listCheck:{},
 		};
     }
 
@@ -61,6 +69,7 @@ export default class Productionc extends Component {
 		  () => { this.fetchDataa(data.data.domain + this.props.data.checkInfo.detail_url+ '&access_token=' + data.data.token);
                   this.fetchDatab(data.data.domain + this.props.data.checkInfo.check_history_url+ '&access_token=' + data.data.token);
                  },800);
+		SHRS=[];		 
 	}
 
     componentWillUnmount() {
@@ -105,6 +114,48 @@ export default class Productionc extends Component {
 						datas: result.data,
 						datasx:result,
 					});
+					fetch('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=get_shenhe_btn&access_token=' + data.data.token + '', {
+						  method: 'POST',
+						  headers: {
+							'Content-Type': 'application/x-www-form-urlencoded',
+						  },
+						  body: that.toQueryString({
+							'app': 'Account',
+							'mm': 'Expense',
+							'aa':'auditqx',
+							'con_id': that.props.data.con_id,
+							'current_step': result.flow.current_step
+						  })
+						})
+						.then(function (response) {
+							return response.json();
+						})
+						.then(function (result) {
+
+							console.log(result)
+							that.setState({
+								SHR:result.btns.auth_users,
+								listCheck:result.btns.list,
+							});
+							result.btns.auth_users.forEach((datas,i)=>{
+								SHRS.push(datas.name);
+								that.setState({SHRS:SHRS,});
+							})
+
+						})
+						.catch((error) => {
+							that.setState({
+								   loaded:true,
+								   statu:true,
+								   infos:'加载失败'
+							   })
+							that.timerx = setTimeout(() => {
+							  that.setState({
+								 statu:false,
+							})
+						  },1000)
+
+						  });
 
 				})
 				.catch((error) => {
@@ -208,10 +259,33 @@ export default class Productionc extends Component {
 
    	}
 
-   	_xmodalpoeple(visible){
-   		 this.setState({modalpoeple: visible,modalshows: false});
+   	_xmodalpoeple(visible){ 
+		 var that = this;
+		 this.setState({shows:true});
+		 Picker.init({
+		  pickerData: this.state.SHRS,
+		  pickerTitleText: '选择',
+		  pickerToolBarFontSize: 16,
+				pickerFontSize: 16,
+				pickerFontColor: [0, 0 ,0, 1],
+				onPickerConfirm: pickedValue => {
+					this.setState({poepleName:pickedValue,shows:false});
+					that.state.SHR.forEach((data,i)=>{
+					  if(data.name == pickedValue){
+						that.setState({shid:data.uid});
+					  }
+					})
+				},
+				onPickerCancel: pickedValue => {
+					 that.setState({shows:false});
+				},
+				onPickerSelect: pickedValue => {
 
-   	}
+				}
+			});
+			Picker.show();
+
+	}
 
        _select(data){
    		console.log(data)
@@ -225,7 +299,7 @@ export default class Productionc extends Component {
 
        _delets(){
        	this.setState({
-   			poepledata:{},
+   			poepleName:'',
    			});
        }
 
@@ -302,7 +376,7 @@ export default class Productionc extends Component {
 
     tijiaos(){
     	var that=this;
-    	if(JSON.stringify(this.state.poepledata) == "{}"){
+    	if(this.state.poepleName == ""){
 
     		this.setState({
 						statur:true,
@@ -327,7 +401,7 @@ export default class Productionc extends Component {
 				  body: this.toQueryString({
 					'id': this.props.data.con_id,
 					'reply_text': this.state.textaeras,
-					'next_uid':this.state.poepledata.uid,
+					'next_uid':this.state.shid,
 				  })
 				})
 				.then(function (response) {
@@ -567,23 +641,23 @@ export default class Productionc extends Component {
 
 				</ScrollView>}
 				{this.state.loadedst ? <View style={{height:50,flexDirection:'row',justifyContent:'space-around',alignItems:'center',borderTopWidth:0.5,borderColor:'#ccc'}}>
-				 <TouchableOpacity onPress={this._xz.bind(this,data.data.domain + this.props.data.checkInfo.check_url + '&access_token=' + data.data.token)} style={{flex:1,}}>
+				 {this.state.listCheck.hasOwnProperty('pass') ? <TouchableOpacity onPress={this._xz.bind(this,data.data.domain + this.props.data.checkInfo.check_url + '&access_token=' + data.data.token)} style={{flex:1,}}>
 				  <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                   <Text style={{fontSize:16,color:'#4385f4'}}  allowFontScaling={false} adjustsFontSizeToFit={false}>审核通过</Text>
+                   <Text style={{fontSize:16,color:'#4385f4'}}  allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.listCheck['pass']}</Text>
                   </View>
-                 </TouchableOpacity>
-                 <View style={{width:1,height:17,backgroundColor:'#4385f4'}}></View>
-                 <TouchableOpacity  style={{flex:1,}} onPress={this._xz.bind(this,data.data.domain + this.props.data.checkInfo.reject_url + '&access_token=' + data.data.token)}>
+					</TouchableOpacity> : null}
+                 {this.state.listCheck.hasOwnProperty('pass') ? <View style={{width:1,height:17,backgroundColor:'#4385f4'}}></View> : null}
+                 {this.state.listCheck.hasOwnProperty('reject') ? <TouchableOpacity  style={{flex:1,}} onPress={this._xz.bind(this,data.data.domain + this.props.data.checkInfo.reject_url + '&access_token=' + data.data.token)}>
                   <View style={{alignItems:'center',justifyContent:'center'}}>
-                   <Text style={{fontSize:16,color:'#4385f4'}}  allowFontScaling={false} adjustsFontSizeToFit={false}>驳回</Text>
+                   <Text style={{fontSize:16,color:'#4385f4'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.listCheck.reject}</Text>
                   </View>
-                  </TouchableOpacity>
-                  <View style={{width:1,height:17,backgroundColor:'#4385f4'}}></View>
-                  <TouchableOpacity  style={{flex:1,paddingRight:10,paddingLeft:10}} onPress={this._xzs.bind(this,true)}>
+				 </TouchableOpacity> : null}
+                  {this.state.listCheck.hasOwnProperty('reject') ? <View style={{width:1,height:17,backgroundColor:'#4385f4'}}></View> : null}
+                  {this.state.listCheck.hasOwnProperty('next') ?  <TouchableOpacity  style={{flex:1,paddingRight:10,paddingLeft:10}} onPress={this._xzs.bind(this,true)}>
                   <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
-                   <Text style={{fontSize:16,color:'#4385f4'}} allowFontScaling={false} adjustsFontSizeToFit={false}>提交下一步</Text>
+                   <Text style={{fontSize:16,color:'#4385f4'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.listCheck.next}</Text>
                   </View>
-                  </TouchableOpacity>
+                  </TouchableOpacity> : null}
 				</View> : null}
 				<View>
 					   <Modal
@@ -685,10 +759,10 @@ export default class Productionc extends Component {
                                    <Text style={{fontSize:12,color:'#bbb',marginLeft:5}} allowFontScaling={false} adjustsFontSizeToFit={false}>(点击姓名可删除)</Text>
                                  </View>
                                  <View style={{marginTop:15,flexDirection:'row',alignItems:'center',}}>
-                                     {this.state.poepledata.name ? <TouchableOpacity onPress={this._delets.bind(this)} activeOpacity={1}><View style={{backgroundColor:'#60a9e8',paddingBottom:8,paddingTop:8,paddingLeft:10,paddingRight:10,marginRight:10,borderRadius:3}}>
-                                        <Text style={{color:'#fff'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.poepledata.name}</Text>
+                                     {this.state.poepleName != '' ? <TouchableOpacity onPress={this._delets.bind(this)} activeOpacity={1}><View style={{backgroundColor:'#60a9e8',paddingBottom:8,paddingTop:8,paddingLeft:10,paddingRight:10,marginRight:10,borderRadius:3}}>
+                                        <Text style={{color:'#fff'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.poepleName}</Text>
                                      </View></TouchableOpacity> : null}
-                                    <TouchableOpacity style={{width:46,height:46,marginTop:5,alignItems:'center',justifyContent:'center'}} onPress={this._xmodalpoeple.bind(this,true)}>
+                                    <TouchableOpacity style={{width:46,height:46,marginTop:5,alignItems:'center',justifyContent:'center'}} onPress={this._xmodalpoeple.bind(this)}>
 
                                       <Icon name="ios-add-circle-outline" color="#ccc"size={46}  />
 
@@ -710,6 +784,7 @@ export default class Productionc extends Component {
 							  <Icon name="ios-close-outline" color="#fff"size={36}  />
 							  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 				            </Animated.View> : null}
+							{this.state.shows ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
 					   </Modal>
 
 					</View>

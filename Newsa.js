@@ -134,7 +134,7 @@ export default class Newsa extends Component {
 							   sx:false,
                                isNull:false,
 						   })
-						   fetch('' + data.data.domain + '/index.php?app=Home&m=Audit&a=changeStatusMulti&is_read=1&access_token=' + data.data.token + '', {
+						   fetch('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=changeStatusMulti&is_read=1&access_token=' + data.data.token + '', {
 							  method: 'POST',
 							  headers: {
 								'Content-Type': 'application/x-www-form-urlencoded',
@@ -324,7 +324,7 @@ export default class Newsa extends Component {
 										   isRefreshing:false,
 										   isNull:false,
 									   })
-									  fetch('' + data.data.domain + '/index.php?app=Home&m=Audit&a=changeStatusMulti&is_read=1&access_token=' + data.data.token + '', {
+									  fetch('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=changeStatusMulti&is_read=1&access_token=' + data.data.token + '', {
 									  method: 'POST',
 									  headers: {
 										'Content-Type': 'application/x-www-form-urlencoded',

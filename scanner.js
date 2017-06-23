@@ -55,13 +55,13 @@ export default class Scanner extends React.Component {
     }
 
     _pressButton() {
-		this.setState({bgcolor:'#4385f4'})
         const { navigator } = this.props;
         if(navigator) {
-
+            //很熟悉吧，入栈出栈~ 把当前的页面pop掉，这里就返回到了上一个页面了
             navigator.pop();
-         }
-
+			return true;
+        }
+		return false;
     }
 
 

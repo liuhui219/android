@@ -201,7 +201,7 @@ export default class CreatBX extends React.Component {
     cc.length = 0;
     checks.length = 0;
     flog = false;
-    this.setState({selDatas:[],})
+    this.setState({selDatas:[],}) 
     fetch('' + data.data.domain + '/index.php?app=Account&m=ExpenseApi&a=userpj&uid='+data.data.uid+'&access_token=' + data.data.token + '')
       .then((response) => response.json())
       .then((responseData) => {
@@ -504,7 +504,7 @@ export default class CreatBX extends React.Component {
 			file = '';
 		}else{
 			file = {uri: this.state.imguri, type: 'multipart/form-data', name: 'a.jpg'};
-		} 
+		}
     formData.append("uid",this.state.uid);
     formData.append("money",this.state.money);
     formData.append("file",file);

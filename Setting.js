@@ -184,7 +184,7 @@ export default class Setting extends React.Component {
 						           </View>
 							   </View>
 
-						    </TouchableOpacity  >
+						    </TouchableOpacity>
 						</View>
 						<ScrollView style={{flex:1,marginBottom:5,}}>
 						   <View style={{marginTop:10,flexDirection:'column', backgroundColor:'#fff',flex:1,}}>

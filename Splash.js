@@ -44,6 +44,7 @@ class Splash extends Component {
       syncInBackground: true
       }).then(ret => {
         global.data=ret.data
+		global.PUSHDATA=ret.PUSHDATA
 
           InteractionManager.runAfterInteractions(() => {
 

@@ -48,6 +48,7 @@ export default class Home extends React.Component {
 		  isNull:0,
 		  isNull_a:0,
 		  isNull_b:0,
+		  NUMTOTAL:0,
       bgc:'#4385f4',
 	  };
     }
@@ -58,6 +59,39 @@ export default class Home extends React.Component {
            this.fetchData_a('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
            this.fetchData_b('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
            this.fetchUpdate('http://www.linksame.com/phone/update.php');
+
+    }
+
+
+	componentWillReceiveProps(nextProps) { 
+		if(nextProps.bgCount == 0 && nextProps.xxCount == 0 && nextProps.ywCount == 0){
+			return false;
+		}else if(nextProps.bgCount != undefined && nextProps.xxCount == undefined && nextProps.ywCount == undefined){
+			this.setState({
+			  isNull_a:nextProps.bgCount,
+			  data_a:nextProps.Contents, 
+			})
+
+		}else if(nextProps.bgCount == undefined && nextProps.xxCount != undefined && nextProps.ywCount == undefined){
+			this.setState({
+			  isNull: nextProps.xxCount,
+			  data:nextProps.Contents, 
+			})
+
+		}else if(nextProps.bgCount == undefined && nextProps.xxCount == undefined && nextProps.ywCount != undefined){
+			this.setState({
+			  isNull_b: nextProps.ywCount,
+			  data_b:nextProps.Contents, 
+			})
+
+		}else{
+			this.setState({
+			  isNull_b: nextProps.ywCount,
+			  isNull_a: nextProps.bgCount,
+			  isNull: nextProps.xxCount,  
+			})
+
+		}
 
     }
 
@@ -104,19 +138,21 @@ export default class Home extends React.Component {
 					'status': -1,
 				  })
 				})
-				.then(function (response) {
+				.then(function (response) {  
                     return response.json();
 				})
-				.then(function (result) {
-
+				.then(function (result) {  
+				   that.props.totalnums.bind(that,result.count,true)();
 					  that.setState({
 						   isNull:result.count,
 						   isRefreshing:false,
                            data:null,
 					  })
-                      if(result.count>0){
+
+		              
+                      if(result.count>0){ 
 						that.setState({
-						   data:result.data[0].content,
+						   data:result.data[result.data.length-1].content,
 						   isRefreshing:false,
 					    })
 					  }
@@ -151,6 +187,8 @@ export default class Home extends React.Component {
 						   data_a:null,
 						   isRefreshing:false,
 					  })
+
+			          that.props.totalnums_a.bind(that,result.count,true)();
                       if(result.count>0){
 						that.setState({
 						   data_a:result.data[0].content,
@@ -182,6 +220,8 @@ export default class Home extends React.Component {
 						   data_b:null,
 						   isRefreshing:false,
 					  })
+
+			          that.props.totalnums_b.bind(that,result.count,true)();
                       if(result.count>0){
 						that.setState({
 						   data_b:result.data[0].content,
@@ -208,23 +248,23 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			InteractionManager.runAfterInteractions(() => {
+			 
             navigator.push({
                 name: 'News',
                 component: News,
-			    params: {
-                    getUser: function(user) {
-                        _this.setState({
-                            user: user
-                        })
-						if(user == true){
-							_this.fetchData('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');;
-						}
+			    // params: {
+                    // getUser: function(user) {
+                        // _this.setState({
+                            // user: user
+                        // })
+						// if(user == true){
+							// _this.fetchData('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');;
+						// }
 
-                    }
-                }
+                    // }
+                // }
             })
-			})
+			 
         }
 	}
 
@@ -232,20 +272,20 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			InteractionManager.runAfterInteractions(() => {
+			 
             navigator.push({
                 name: 'Approval',
                 component: Approval,
-				params: {
-                    getUser: function(user) {
-						if(user == true){
-							_this.fetchData_a('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
-						}
+				// params: {
+                    // getUser: function(user) {
+						// if(user == true){
+							// _this.fetchData_a('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
+						// }
 
-                    }
-                }
+                    // }
+                // }
             })
-			})
+			 
         }
 	}
 
@@ -253,20 +293,20 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			InteractionManager.runAfterInteractions(() => {
+			 
             navigator.push({
                 name: 'Operation',
                 component: Operation,
-				params: {
-                    getUser: function(user) {
-						if(user == true){
-							_this.fetchData_b('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
-						}
+				// params: {
+                    // getUser: function(user) {
+						// if(user == true){
+							// _this.fetchData_b('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=getAudit&uid='+data.data.uid+'&cid='+data.data.cid+'&access_token=' + data.data.token + '');
+						// }
 
-                    }
-                }
+                    // }
+                // }
             })
-			})
+			 
         }
 	}
 
@@ -322,7 +362,7 @@ export default class Home extends React.Component {
 							   <View style={{width: 50, height: 50,borderRadius:25,backgroundColor:'#1ADA9A',alignItems:'center', justifyContent:'center'}}>
 						           <Image source={require('./imgs/xiaox.png')} style={{width: 30, height: 30,}} />
 							   </View>
-							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:0.5, borderColor:'#ccc', height: 70,paddingTop:2,paddingBottom:10, }}>
+							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>消息</Text>
 									  {this.state.data ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data}</Text> : <Text style={{color:'#ccc'}}></Text>}
@@ -346,7 +386,7 @@ export default class Home extends React.Component {
 						        <View style={{width: 50, height: 50,borderRadius:25,backgroundColor:'#35DCEF',alignItems:'center', justifyContent:'center'}}>
 						           <Image source={require('./imgs/sp.png')} style={{width: 30, height: 30,}} />
 							   </View>
-                                 <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:0.5, borderColor:'#ccc', height: 70,paddingTop:2,paddingBottom:10, }}>
+                                 <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>办公审批</Text>
 									  {this.state.data_a ? <Text numberOfLines={1} allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data_a}</Text> : <Text style={{color:'#ccc'}}></Text>}
@@ -371,7 +411,7 @@ export default class Home extends React.Component {
 						       <View style={{width: 50, height: 50,borderRadius:25,backgroundColor:'#718DC1',alignItems:'center', justifyContent:'center'}}>
 						           <Image source={require('./imgs/sp1.png')} style={{width: 30, height: 30,}} />
 							   </View>
-							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:0.5, borderColor:'#ccc', height: 70,paddingTop:2,paddingBottom:10, }}>
+							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>业务审批</Text>
 									  {this.state.data_b ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data_b}</Text> : <Text style={{color:'#ccc'}}></Text>}
@@ -395,7 +435,7 @@ export default class Home extends React.Component {
 						       <View style={{width: 50, height: 50,borderRadius:25,backgroundColor:'#978BC3',alignItems:'center', justifyContent:'center'}}>
 						           <Image source={require('./imgs/rc.png')} style={{width: 30, height: 30,}} />
 							   </View>
-							  <View style={{marginLeft:10,flex:1,flexDirection:'column',borderBottomWidth:0.5, borderColor:'#ccc', height: 70,paddingTop:10,paddingBottom:10, }}>
+							  <View style={{marginLeft:10,flex:1,flexDirection:'column',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:10,paddingBottom:10, }}>
 							      <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>日程</Text>
 								  <Text style={{ fontSize:13,paddingTop:6,}}> </Text>
 							   </View>

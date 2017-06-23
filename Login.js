@@ -50,6 +50,19 @@ export class Login extends Component {
 	        });
     }
 
+	toQueryString(obj) {
+      return obj ? Object.keys(obj).sort().map(function (key) {
+        var val = obj[key];
+        if (Array.isArray(val)) {
+          return val.sort().map(function (val2) {
+            return encodeURIComponent(key) + '=' + encodeURIComponent(val2);
+          }).join('&');
+        }
+
+        return encodeURIComponent(key) + '=' + encodeURIComponent(val);
+      }).join('&') : '';
+    }
+
 
 	onNavigationStateChange(navState) {
 
@@ -73,12 +86,49 @@ export class Login extends Component {
 				},
 				expires: 1000 * 3600 * 30 * 24
 			  });
-            const {navigator} = this.props;
 
-				navigator.resetTo({
-				  component: AppMain,
-				  name: 'AppMain'
-				});
+
+            fetch('' + data.data.domain + '/index.php?app=Im&m=User&a=mobileInfo&access_token=' + data.data.token + '', {
+				   method: 'POST',
+				   headers: {
+				   'Content-Type': 'application/x-www-form-urlencoded',
+				   },
+				   body: this.toQueryString({
+						'token': '1',
+						'type': 0
+				   })
+				 })
+				 .then(function (response) {
+				   return response.json();
+				 })
+				 .then(function (result) {
+				  console.log(result);
+				 })
+				 .catch((error) => {
+
+				 });
+            fetch('' + data.data.domain + '/index.php?app=Im&m=MobileApi&a=getInfo&access_token=' + data.data.token + '')
+     		  .then((response) => response.json())
+     		  .then((responseData) => {
+				  console.log(responseData)
+                global.PUSHDATA=responseData;
+                storage.save({
+         				key: 'loginState',  // 注意:请不要在key中使用_下划线符号!
+         				rawData: {
+                          data: data,
+         				  PUSHDATA: responseData,
+         				},
+         				expires: 1000 * 3600 * 30 * 24
+         			  });
+                        const {navigator} = this.props;
+        				navigator.resetTo({
+        				  component: AppMain,
+        				  name: 'AppMain'
+        				});
+     		  })
+     		  .catch((error) => {
+             console.log(error)
+          });
 
 		}
 
@@ -118,7 +168,7 @@ export class Login extends Component {
 
 		this.setState({
 
-            isfalse:true,
+            isfalse:false,
 		});
 	}
 
@@ -148,7 +198,7 @@ export class Login extends Component {
 					backgroundColor={'#4385f4'}
 					hidden={false}
 					barStyle="light-content"
-					translucent={true} 
+					translucent={true}
 				 />
 			    <View style={{height:70,paddingTop:25,backgroundColor:'#4385f4',alignItems:'center', justifyContent:'center'}}>
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#fff',fontSize:18}}>登录</Text>

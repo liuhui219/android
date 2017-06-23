@@ -14,8 +14,7 @@ import {
 	Image,
 	RefreshControl,
 	ListView,
-} from 'react-native';
-
+} from 'react-native'; 
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
 import Approvala from './Approvala';
@@ -113,7 +112,7 @@ export default class Approval extends React.Component {
 					 <Approvalc navigator = {this.props.navigator} {...this.props}/>
 				  </View>
 				</ScrollableTabView>
-
+                
 	  </View>
     );
     }

@@ -5,6 +5,7 @@ import {
     Navigator,
 	TouchableOpacity,
 	TouchableNativeFeedback,
+	TouchableHighlight,
 	Text,
 	DatePickerAndroid,
 	TimePickerAndroid,
@@ -26,7 +27,8 @@ import MoreApp from './MoreApp';
 import Mattendance from './Mattendance';
 import Gonggao from './Gonggao';
 import Scanner from './scanner';
-import pan from './pan';
+import pan from './pan'; 
+import Sales from './Sales/Sales';
 import ProjectM from './Project/ProjectM';
 import cameraCard from './cameraCard';
 import Netinfo from './Netinfo';
@@ -319,13 +321,23 @@ export default class Application extends Component {
 					   </Text>
 					  </View>
 					</TouchableNativeFeedback>
-          <TouchableNativeFeedback  onPress={this._all.bind(this,cameraCard )} >
+                    <TouchableNativeFeedback  onPress={this._all.bind(this,cameraCard )} >
 					  <View style={{alignItems:'center', justifyContent:'center',width:Dimensions.get('window').width/4,height:Dimensions.get('window').width/4,borderRightWidth:1,borderBottomWidth:1,borderColor:'#ececec',}}>
 					   <View style={{width: 35, height: 35,borderRadius:5,backgroundColor:'#6b9f3d',alignItems:'center', justifyContent:'center'}}>
 					      <Image source={require('./imgs/scannerCard.png')} style={{width: 26, height: 26,}} />
 					   </View>
 					   <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{marginTop:8,fontSize:13}}>
 					      扫名片
+					   </Text>
+					  </View>
+					</TouchableNativeFeedback>
+					<TouchableNativeFeedback  onPress={this._all.bind(this,Sales)}>
+					  <View style={{alignItems:'center', justifyContent:'center',width:Dimensions.get('window').width/4,height:Dimensions.get('window').width/4,borderRightWidth:1,borderBottomWidth:1,borderColor:'#ececec',}}>
+					   <View style={{width: 35, height: 35,borderRadius:5,backgroundColor:'#d76116',alignItems:'center', justifyContent:'center'}}>
+					      <Image source={require('./imgs/sales.png')} style={{width: 26, height: 26,}} />
+					   </View>
+					   <Text style={{marginTop:8,fontSize:12}}allowFontScaling={false}>
+					      销售管理
 					   </Text>
 					  </View>
 					</TouchableNativeFeedback>
@@ -363,7 +375,7 @@ export default class Application extends Component {
 				</View>
 			 </View>
 			 <TouchableNativeFeedback  onPress={this._AddApp.bind(this)} >
-				 <View style={{flexDirection:'row',height:50,justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10,backgroundColor:'#fff',marginTop:15,}}>
+				 <View style={{flexDirection:'row',height:50,justifyContent:'space-between',alignItems:'center',paddingLeft:10,paddingRight:10,backgroundColor:'#fff',marginTop:15,marginBottom:15}}>
 					<View style={{flexDirection:'row',alignItems:'center',}}>
 					  <Icon name="ios-add-outline" color="#666"size={28}  />
 					  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{marginLeft:10,fontSize:16,}}>添加应用</Text>

@@ -15,6 +15,7 @@ import {
 	TextInput,
 	Dimensions,
 	BackAndroid,
+	DeviceEventEmitter,
 	Image,
 	RefreshControl,
 	ListView,
@@ -31,7 +32,7 @@ import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFS from 'react-native-fs';
 import OpenFile from 'react-native-doc-viewer';
 import panLook from './panLook';
-import CheckBox from 'react-native-check-box';
+import CheckBox from './CheckBox/CheckBox';
 import RNFetchBlob from 'react-native-fetch-blob'
 var array = [];
 var dataImpor = [];
@@ -229,7 +230,7 @@ export default class Newsb extends React.Component {
 		flog = false;
         flogs = false;
 		this.setState({isfalse:true,checks:false,isChecked:false,ischeck:true,});
-		this._Refresh();
+		DeviceEventEmitter.emit('ischeck',{isChecked:false});
 		Animated.timing(
 		   this.state.widths,
 		   {toValue: 0},
@@ -295,7 +296,7 @@ export default class Newsb extends React.Component {
 		flog = true;
         flogs = true;
 		this.setState({isChecked:true,ischeck:false,})
-		this._Refresh();
+		DeviceEventEmitter.emit('ischeck',{isChecked:true});
 		console.log(folder_str);
 		console.log(file_str);
 	}
@@ -308,7 +309,7 @@ export default class Newsb extends React.Component {
 		flog = false;
         flogs = false;
 		this.setState({isChecked:false,ischeck:true,})
-		this._Refresh();
+		DeviceEventEmitter.emit('ischeck',{isChecked:false});
 
 	}
 

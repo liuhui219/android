@@ -104,10 +104,8 @@ export default class cameraCard extends React.Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}
-          captureTarget={Camera.constants.CaptureTarget.disk}
-          onZoomChanged={() => {}}
-          defaultTouchToFocus
+          aspect={Camera.constants.Aspect.fill}   
+
         >
 
         </Camera>

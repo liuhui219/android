@@ -39,6 +39,8 @@ export default class Webviewst extends Component {
 			 isreload:true,
 			 url:'',
 			 isloading:false,
+			 canBack:false,
+			 title:'',
 		};
     }
 
@@ -48,19 +50,22 @@ export default class Webviewst extends Component {
 		 })
 
 	  }
+	
+     
 
 
 	_pressButton() {
         const { navigator } = this.props;
-        if(navigator) {
-            //很熟悉吧，入栈出栈~ 把当前的页面pop掉，这里就返回到了上一个页面了
-            navigator.popToTop({
-				component: Application,
-				name: 'Application'
-			});
-			return true;
+        if (this.state.canBack) {
+           this.refs[WEBVIEW_REF].goBack();
+		   return true;
+        } else {
+           if(navigator) { 
+				navigator.pop();
+				return true;
+			}
+			return false;
         }
-		return false;
     }
 
 	componentWillUnmount() {
@@ -70,11 +75,12 @@ export default class Webviewst extends Component {
 	}
 	onNavigationStateChange(navState) {
 
-
+ 
 
 			this.setState({
 				isfalse:true,
-
+                canBack: navState.canGoBack,
+				title: navState.title,
 			})
 
 	 }
@@ -132,8 +138,8 @@ export default class Webviewst extends Component {
 			})
 	}
 
-	onLoadEnd(){
-
+	onLoadEnd(navState){
+         
 		this.setState({
 			url:this.props.url,
 			isloading:false,
@@ -153,7 +159,7 @@ export default class Webviewst extends Component {
     return (
 	   <View style={{flex:1,flexDirection:'column',backgroundColor:'#fff'}}> 
 			  {this.state.isfalse ? <View style={styles.card}>
-				  <View style={{flex:1,justifyContent:'center'}}>
+				  <View style={{width:70,justifyContent:'center'}}>
 							 <TouchableOpacity onPress={this._pressButton.bind(this)}>
 								  <View style={{justifyContent:'flex-start',flexDirection:'row',alignItems:'center',}}>
 								        <Image source={require('./imgs/back.png')} style={{width: 25, height: 25,marginLeft:5,}} />
@@ -161,12 +167,12 @@ export default class Webviewst extends Component {
 								  </View>
 							</TouchableOpacity>
 				  </View>
-				  <View style={{flex:1,alignItems:'center',justifyContent:'center'}}>
+				  <View  style={{flex:1,alignItems:'center',justifyContent:'center'}}>   
 							<View style={{justifyContent:'center',flexDirection:'row',alignItems:'center'}}>
-										<Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'white',fontSize:18}}></Text>
+										<Text numberOfLines={1} allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'white',fontSize:18}}>{this.state.title}</Text>
 							</View>
 				  </View>
-				  <View style={{flex:1,justifyContent:'center'}}>
+				  <View style={{width:70,justifyContent:'center'}}>
 
 				  </View>
 			  </View> : null}
