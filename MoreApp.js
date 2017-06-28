@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 
 
-
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 var DataA=[];
 export default class KqTj extends React.Component {
@@ -277,6 +277,7 @@ export default class KqTj extends React.Component {
 				  <Icon name="ios-refresh-outline" color="#ccc"size={60}  />
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#ccc',}}>点击屏幕，重新刷新</Text>
 	           </View></TouchableOpacity>	 : <View></View>}
+          <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

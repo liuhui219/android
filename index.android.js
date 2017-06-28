@@ -7,5 +7,5 @@ import React, { Component } from 'react';
 import {
   AppRegistry,
 } from 'react-native';
-import rootApp from './root';
-AppRegistry.registerComponent('linksa', () => rootApp);
+import root from './App';
+AppRegistry.registerComponent('linksa', () => root);

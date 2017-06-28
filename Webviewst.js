@@ -18,7 +18,7 @@ import {
 	BackAndroid,
 	Image
 } from 'react-native';
-
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker'
 import Token from './Token';
@@ -41,6 +41,7 @@ export default class Webviewst extends Component {
 			 isloading:false,
 			 canBack:false,
 			 title:'',
+			 back:false,
 		};
     }
 
@@ -50,8 +51,18 @@ export default class Webviewst extends Component {
 		 })
 
 	  }
-	
-     
+
+    _back(){
+      const { navigator } = this.props;
+      if(navigator) {
+        navigator.popToTop({
+            component: Application,
+            name: 'Application'
+          });
+           return true;
+         }
+         return false;
+    }
 
 
 	_pressButton() {
@@ -60,7 +71,7 @@ export default class Webviewst extends Component {
            this.refs[WEBVIEW_REF].goBack();
 		   return true;
         } else {
-           if(navigator) { 
+           if(navigator) {
 				navigator.pop();
 				return true;
 			}
@@ -74,8 +85,10 @@ export default class Webviewst extends Component {
 
 	}
 	onNavigationStateChange(navState) {
+            if(navState.canGoBack){
+				this.setState({back:true})
+			  }
 
- 
 
 			this.setState({
 				isfalse:true,
@@ -139,7 +152,7 @@ export default class Webviewst extends Component {
 	}
 
 	onLoadEnd(navState){
-         
+
 		this.setState({
 			url:this.props.url,
 			isloading:false,
@@ -157,7 +170,7 @@ export default class Webviewst extends Component {
 
     render() {
     return (
-	   <View style={{flex:1,flexDirection:'column',backgroundColor:'#fff'}}> 
+	   <View style={{flex:1,flexDirection:'column',backgroundColor:'#fff'}}>
 			  {this.state.isfalse ? <View style={styles.card}>
 				  <View style={{width:70,justifyContent:'center'}}>
 							 <TouchableOpacity onPress={this._pressButton.bind(this)}>
@@ -167,13 +180,17 @@ export default class Webviewst extends Component {
 								  </View>
 							</TouchableOpacity>
 				  </View>
-				  <View  style={{flex:1,alignItems:'center',justifyContent:'center'}}>   
+				  <View  style={{flex:1,alignItems:'center',justifyContent:'center'}}>
 							<View style={{justifyContent:'center',flexDirection:'row',alignItems:'center'}}>
 										<Text numberOfLines={1} allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'white',fontSize:18}}>{this.state.title}</Text>
 							</View>
 				  </View>
 				  <View style={{width:70,justifyContent:'center'}}>
-
+                            {this.state.back ? <TouchableOpacity onPress={this._back.bind(this)}>
+								 <View style={{justifyContent:'flex-end',flexDirection:'row',alignItems:'center',marginRight:10}}>
+								   <Text style={{color:'white',fontSize:16,marginLeft:-5,}} allowFontScaling={false}>关闭</Text>
+								 </View>
+							 </TouchableOpacity> : null}
 				  </View>
 			  </View> : null}
              <WebView style={{  flex:1,}}
@@ -198,7 +215,7 @@ export default class Webviewst extends Component {
 						<Text allowFontScaling={false} adjustsFontSizeToFit={false} style={styles.loadingTitle}>正在加载...</Text>
 					</View>
 				</View> : <View></View>}
-
+       <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

@@ -25,6 +25,7 @@ import {
 var FilePickerManager = NativeModules.FilePickerManager;
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Gonggaob from './Gonggaob';
 import Swipeable from 'react-native-swipeable';
@@ -723,7 +724,7 @@ export default class Newsb extends React.Component {
 						</TouchableOpacity>
 					 </View>
 			 </View></View> : null}
-
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 		 </View>
 		)
 

@@ -10,7 +10,7 @@ import {
 	Image,
 	Dimensions,
 } from 'react-native';
-
+import PassState from './PassState';
 import Token from './Token';
 import * as httpCache from 'react-native-http-cache';
 export default class About extends React.Component {
@@ -106,6 +106,7 @@ export default class About extends React.Component {
 	                      </View>}
 				  </View>
 			</View>
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

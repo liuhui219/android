@@ -13,6 +13,7 @@ import {
 import Swiper from 'react-native-swiper';
 import {Login,data} from './Login';
 import Splash from './Splash';
+import PassState from './PassState';
 const { width, height } = Dimensions.get('window')
 
 const styles = {
@@ -37,7 +38,7 @@ export default class Welcome extends Component {
         super(props);
 		this._pressButton = this._pressButton.bind(this);
         BackAndroid.addEventListener('hardwareBackPress', this._pressButton);
-        
+
     }
 _pressButton() {
         const { navigator } = this.props;
@@ -45,24 +46,24 @@ _pressButton() {
             //很熟悉吧，入栈出栈~ 把当前的页面pop掉，这里就返回到了上一个页面了
             navigator.pop();
 			return true;
-        }  
-		return false;   
+        }
+		return false;
     }
-componentWillUnmount() {        
-	  BackAndroid.removeEventListener('hardwareBackPress', this._pressButton);  
-	   
+componentWillUnmount() {
+	  BackAndroid.removeEventListener('hardwareBackPress', this._pressButton);
+
 	}
   render () {
     return (
       <View>
-        
+
           <StatusBar
 		    backgroundColor={'#4385f4'}
-			hidden={true} 
-			barStyle="light-content"   
-			translucent={false}    
+			hidden={true}
+			barStyle="light-content"
+			translucent={false}
             style={{height: 25}}
-         />  
+         />
           <Swiper style={styles.wrapper}
             dot={<View style={{backgroundColor: 'rgba(0,0,0,.3)', width: 8, height: 8, borderRadius: 4, marginLeft: 7, marginRight: 7}} />}
             activeDot={<View style={{backgroundColor: '#666', width: 8, height: 8, borderRadius: 4, marginLeft: 7, marginRight: 7}} />}
@@ -84,10 +85,10 @@ componentWillUnmount() {
                     <Text style={{fontSize:18, color:'#fff'}}  allowFontScaling={false} adjustsFontSizeToFit={false}>返回</Text>
                 </View>
               </TouchableHighlight>
-              </View>   
+              </View>
             </View>
           </Swiper>
-        
+        <PassState navigator = {this.props.navigator} {...this.props}/>
       </View>
     )
   }

@@ -18,6 +18,7 @@ import {
 	Dimensions,
 	Image
 } from 'react-native';
+import PassState from './PassState';
 import SelectPoeple from './SelectPoeple';
 import Icon from 'react-native-vector-icons/Ionicons';
 var dataImpor = [];
@@ -598,7 +599,7 @@ renders() {
 
 
 				</ScrollView>}
-				 
+
 				<View>
 					   <Modal
 					      animationType={"slide"}
@@ -652,6 +653,7 @@ renders() {
 							  <Icon name="ios-close-outline" color="#fff"size={36}  />
 							  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 				            </Animated.View> : null}
+                    <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
 
@@ -724,6 +726,7 @@ renders() {
 							  <Icon name="ios-close-outline" color="#fff"size={36}  />
 							  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 				            </Animated.View> : null}
+                    <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 
 					</View>
@@ -759,12 +762,14 @@ renders() {
 							<View style={{flex:1}}>
                                <SelectPoeple _select={this._select.bind(this)}/>
 							</View>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
 					{this.state.statu ? <Animated.View style={{ padding:10,width:200,backgroundColor:'rgba(23, 22, 22, 0.7)',justifyContent:'flex-start',alignItems:'center',position:'absolute',top:(Dimensions.get('window').height-150)/2,left:(Dimensions.get('window').width-200)/2,}}>
 					  <Icon name="ios-close-outline" color="#fff"size={36}  />
 					  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 		            </Animated.View> : null}
+                <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

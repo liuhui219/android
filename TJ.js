@@ -14,6 +14,7 @@ import {
 } from 'react-native';
 import Communications from 'react-native-communications';
 import Token from './Token';
+import PassState from './PassState';
 import CalendarTj from './CalendarTj';
 import KqTj from './KqTj';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -127,6 +128,7 @@ export default class TJ extends React.Component {
 				  </View>
 
 				</View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

@@ -13,6 +13,7 @@ import {
 	Image
 } from 'react-native';
 import Gonggaoa from './Gonggaoa';
+import PassState from './PassState';
 import Token from './Token';
 import HTMLView from 'react-native-htmlview';
 export default class Gonggao extends React.Component {
@@ -129,6 +130,7 @@ export default class Gonggao extends React.Component {
 						</ScrollView>
 					 </View>
 				</View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 		   </View>
 		)
 	}

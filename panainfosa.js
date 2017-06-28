@@ -26,6 +26,7 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 import Token from './Token';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Gonggaob from './Gonggaob';
+import PassState from './PassState';
 import Swipeable from 'react-native-swipeable';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFS from 'react-native-fs';
@@ -702,7 +703,7 @@ export default class Newsb extends React.Component {
 						</TouchableOpacity>
 					 </View>
 			 </View></View> : null}
-
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 		 </View>
 		)
 

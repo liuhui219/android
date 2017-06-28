@@ -25,7 +25,6 @@ import {
 import Workflow from './Workflow';
 import Assetm from './Assetm';
 import Bxm from './Bxm';
-import PassState from './PassState';
 import qus from './qus';
 import Attendancem from './Attendancem';
 import Netinfo from './Netinfo';
@@ -69,8 +68,8 @@ export default class FacebookExample extends Component {
 		super(props);
         BackAndroid.addEventListener('hardwareBackPress', this.onBackAndroid);
 		this.state = {
-			tabNames: ['æ¶ˆæ¯', 'é€šè®¯å½•', 'åº”ç”¨',  'æˆ‘çš„'],
-			Barleft: 'æ¶ˆæ¯',
+			tabNames: ['ÏûÏ¢', 'Í¨Ñ¶Â¼', 'Ó¦ÓÃ',  'ÎÒµÄ'],
+			Barleft: 'ÏûÏ¢',
 			selectedTab:'home',
 			isshow:false,
 			bars:'light-content',
@@ -87,7 +86,7 @@ export default class FacebookExample extends Component {
 			bot6: new Animated.Value(-120),
 			bot7: new Animated.Value(-120),
 			bot8: new Animated.Value(-120),
-			weekday:['æ—¥','ä¸€','äºŒ','ä¸‰','å››','äº”','å…­'],
+			weekday:['ÈÕ','Ò»','¶ş','Èı','ËÄ','Îå','Áù'],
 			bgc:'#4385f4',
 			isshows:false,
 			infost:'',
@@ -160,37 +159,30 @@ export default class FacebookExample extends Component {
 		if(datas.data.user == data.data.uid){
 			  isstate = true;
               //alert(JSON.stringify(datas))
-        if(datas.data.msg.unreadData.hasOwnProperty('bgCount') && !datas.data.msg.unreadData.hasOwnProperty('ywCount') && !datas.data.msg.unreadData.hasOwnProperty('xxCount')){
-           var all_totals = Number(datas.data.msg.unreadData.bgCount) + Number(that.state.NUMS) + Number(that.state.NUMS_B);
+        if(datas.data.msg.unreadData.bgCount){
+           all_totals = Number(datas.data.msg.unreadData.bgCount) + Number(that.state.NUMS) + Number(that.state.NUMS_B);
            if(all_totals>=100){
-             that.setState({badgeNum:'99+',bgCount:datas.data.msg.unreadData.bgCount,});
+             that.setState({badgeNum:'99+'});
            }else{
-             that.setState({badgeNum:all_totals,bgCount:datas.data.msg.unreadData.bgCount,});
+             that.setState({badgeNum:all_totals});
            }
-        }else if(datas.data.msg.unreadData.hasOwnProperty('ywCount') && !datas.data.msg.unreadData.hasOwnProperty('bgCount') && !datas.data.msg.unreadData.hasOwnProperty('xxCount')){
-           var all_totals = Number(datas.data.msg.unreadData.ywCount) + Number(that.state.NUMS) + Number(that.state.NUMS_A);
+        }if(datas.data.msg.unreadData.ywCount){
+           all_totals = Number(datas.data.msg.unreadData.ywCount) + Number(that.state.NUMS) + Number(that.state.NUMS_A);
            if(all_totals>=100){
-             that.setState({badgeNum:'99+',ywCount:datas.data.msg.unreadData.ywCount,});
+             that.setState({badgeNum:'99+'});
            }else{
-             that.setState({badgeNum:all_totals,ywCount:datas.data.msg.unreadData.ywCount,});
+             that.setState({badgeNum:all_totals});
            }
-        }else if(datas.data.msg.unreadData.hasOwnProperty('xxCount') && !datas.data.msg.unreadData.hasOwnProperty('ywCount') && !datas.data.msg.unreadData.hasOwnProperty('bgCount')){
+        } if(datas.data.msg.unreadData.xxCount){
            all_totals = Number(datas.data.msg.unreadData.xxCount) + Number(that.state.NUMS_B) + Number(that.state.NUMS_A);
            if(all_totals>=100){
-             that.setState({badgeNum:'99+',xxCount:datas.data.msg.unreadData.xxCount,});
+             that.setState({badgeNum:'99+'});
            }else{
-             that.setState({badgeNum:all_totals,xxCount:datas.data.msg.unreadData.xxCount,});
+             that.setState({badgeNum:all_totals});
            }
-        }else if(datas.data.msg.unreadData.hasOwnProperty('ywCount') && datas.data.msg.unreadData.hasOwnProperty('bgCount') && datas.data.msg.unreadData.hasOwnProperty('xxCount')){
-          all_totals = Number(datas.data.msg.unreadData.xxCount) + Number(datas.data.msg.unreadData.ywCount) + Number(datas.data.msg.unreadData.bgCount);
-          if(all_totals>=100){
-            that.setState({badgeNum:'99+',xxCount:datas.data.msg.unreadData.xxCount,ywCount:datas.data.msg.unreadData.ywCount,bgCount:datas.data.msg.unreadData.bgCount,});
-          }else{
-            that.setState({badgeNum:all_totals,xxCount:datas.data.msg.unreadData.xxCount,ywCount:datas.data.msg.unreadData.ywCount,bgCount:datas.data.msg.unreadData.bgCount,});
-          }
         }
-		   that.setState({Contents:datas.data.msg.content,});
-        if((datas.data.msg.nopushios == 0 || datas.data.msg.nopushios == null) && datas.data.msg.title != 'ä¼ä¸šå¾®åœˆæ¶ˆæ¯' ){
+		that.setState({bgCount:datas.data.msg.unreadData.bgCount,ywCount:datas.data.msg.unreadData.ywCount,xxCount:datas.data.msg.unreadData.xxCount,Contents:datas.data.msg.content,});
+        if(datas.data.msg.nopushios == 0){
 
 			  PushNotification.localNotification({
 					id: new Date().getTime(),
@@ -290,79 +282,79 @@ export default class FacebookExample extends Component {
               console.log(responseData)
               this.setState({Datas:responseData.results[0],times:responseData.results[0].last_update.slice(11,16),weathers:true,reloadsd:true,});
               if(responseData.results[0].now['code'] == 0){
-                 this.setState({images:require('./imgs/weather/0.png'),infos:'æ™´'})
+                 this.setState({images:require('./imgs/weather/0.png'),infos:'Çç'})
               }else if(responseData.results[0].now['code'] == 1){
-              	 this.setState({images:require('./imgs/weather/1.png'),infos:'æ™´'})
+              	 this.setState({images:require('./imgs/weather/1.png'),infos:'Çç'})
               }else if(responseData.results[0].now['code'] == 2){
-              	 this.setState({images:require('./imgs/weather/2.png'),infos:'æ™´'})
+              	 this.setState({images:require('./imgs/weather/2.png'),infos:'Çç'})
               }else if(responseData.results[0].now['code'] == 3){
-              	 this.setState({images:require('./imgs/weather/3.png'),infos:'æ™´'})
+              	 this.setState({images:require('./imgs/weather/3.png'),infos:'Çç'})
               }else if(responseData.results[0].now['code'] == 4){
-              	 this.setState({images:require('./imgs/weather/4.png'),infos:'å¤šäº‘'})
+              	 this.setState({images:require('./imgs/weather/4.png'),infos:'¶àÔÆ'})
               }else if(responseData.results[0].now['code'] == 5){
-              	 this.setState({images:require('./imgs/weather/5.png'),infos:'æ™´è½¬å¤šäº‘'})
+              	 this.setState({images:require('./imgs/weather/5.png'),infos:'Çç×ª¶àÔÆ'})
               }else if(responseData.results[0].now['code'] == 6){
-              	 this.setState({images:require('./imgs/weather/6.png'),infos:'æ™´è½¬å¤šäº‘'})
+              	 this.setState({images:require('./imgs/weather/6.png'),infos:'Çç×ª¶àÔÆ'})
               }else if(responseData.results[0].now['code'] == 7){
-              	 this.setState({images:require('./imgs/weather/7.png'),infos:'å¤§éƒ¨å¤šäº‘'})
+              	 this.setState({images:require('./imgs/weather/7.png'),infos:'´ó²¿¶àÔÆ'})
               }else if(responseData.results[0].now['code'] == 8){
-              	 this.setState({images:require('./imgs/weather/8.png'),infos:'å¤§éƒ¨å¤šäº‘'})
+              	 this.setState({images:require('./imgs/weather/8.png'),infos:'´ó²¿¶àÔÆ'})
               }else if(responseData.results[0].now['code'] == 9){
-              	 this.setState({images:require('./imgs/weather/9.png'),infos:'é˜´'})
+              	 this.setState({images:require('./imgs/weather/9.png'),infos:'Òõ'})
               }else if(responseData.results[0].now['code'] == 10){
-              	 this.setState({images:require('./imgs/weather/10.png'),infos:'é˜µé›¨'})
+              	 this.setState({images:require('./imgs/weather/10.png'),infos:'ÕóÓê'})
               }else if(responseData.results[0].now['code'] == 11){
-              	 this.setState({images:require('./imgs/weather/11.png'),infos:'é›·é˜µé›¨'})
+              	 this.setState({images:require('./imgs/weather/11.png'),infos:'À×ÕóÓê'})
               }else if(responseData.results[0].now['code'] == 12){
-              	 this.setState({images:require('./imgs/weather/12.png'),infos:'é›·é˜µé›¨ä¼´æœ‰å†°é›¹'})
+              	 this.setState({images:require('./imgs/weather/12.png'),infos:'À×ÕóÓê°éÓĞ±ù±¢'})
               }else if(responseData.results[0].now['code'] == 13){
-              	 this.setState({images:require('./imgs/weather/13.png'),infos:'å°é›¨'})
+              	 this.setState({images:require('./imgs/weather/13.png'),infos:'Ğ¡Óê'})
               }else if(responseData.results[0].now['code'] == 14){
-              	 this.setState({images:require('./imgs/weather/14.png'),infos:'ä¸­é›¨'})
+              	 this.setState({images:require('./imgs/weather/14.png'),infos:'ÖĞÓê'})
               }else if(responseData.results[0].now['code'] == 15){
-              	 this.setState({images:require('./imgs/weather/15.png'),infos:'å¤§é›¨'})
+              	 this.setState({images:require('./imgs/weather/15.png'),infos:'´óÓê'})
               }else if(responseData.results[0].now['code'] == 16){
-              	 this.setState({images:require('./imgs/weather/16.png'),infos:'æš´é›¨'})
+              	 this.setState({images:require('./imgs/weather/16.png'),infos:'±©Óê'})
               }else if(responseData.results[0].now['code'] == 17){
-              	 this.setState({images:require('./imgs/weather/17.png'),infos:'å¤§æš´é›¨'})
+              	 this.setState({images:require('./imgs/weather/17.png'),infos:'´ó±©Óê'})
               }else if(responseData.results[0].now['code'] == 18){
-              	 this.setState({images:require('./imgs/weather/18.png'),infos:'ç‰¹å¤§æš´é›¨'})
+              	 this.setState({images:require('./imgs/weather/18.png'),infos:'ÌØ´ó±©Óê'})
               }else if(responseData.results[0].now['code'] == 19){
-              	 this.setState({images:require('./imgs/weather/19.png'),infos:'å†»é›¨'})
+              	 this.setState({images:require('./imgs/weather/19.png'),infos:'¶³Óê'})
               }else if(responseData.results[0].now['code'] ==20){
-              	 this.setState({images:require('./imgs/weather/20.png'),infos:'é›¨å¤¹é›ª'})
+              	 this.setState({images:require('./imgs/weather/20.png'),infos:'Óê¼ĞÑ©'})
               }else if(responseData.results[0].now['code'] == 21){
-              	 this.setState({images:require('./imgs/weather/21.png'),infos:'é˜µé›ª'})
+              	 this.setState({images:require('./imgs/weather/21.png'),infos:'ÕóÑ©'})
               }else if(responseData.results[0].now['code'] == 22){
-              	 this.setState({images:require('./imgs/weather/22.png'),infos:'å°é›ª'})
+              	 this.setState({images:require('./imgs/weather/22.png'),infos:'Ğ¡Ñ©'})
               }else if(responseData.results[0].now['code'] == 23){
-              	 this.setState({images:require('./imgs/weather/23.png'),infos:'ä¸­é›ª'})
+              	 this.setState({images:require('./imgs/weather/23.png'),infos:'ÖĞÑ©'})
               }else if(responseData.results[0].now['code'] == 24){
-              	 this.setState({images:require('./imgs/weather/24.png'),infos:'å¤§é›ª'})
+              	 this.setState({images:require('./imgs/weather/24.png'),infos:'´óÑ©'})
               }else if(responseData.results[0].now['code'] == 25){
-              	 this.setState({images:require('./imgs/weather/25.png'),infos:'æš´é›ª'})
+              	 this.setState({images:require('./imgs/weather/25.png'),infos:'±©Ñ©'})
               }else if(responseData.results[0].now['code'] == 26){
-              	 this.setState({images:require('./imgs/weather/26.png'),infos:'æµ®å°˜'})
+              	 this.setState({images:require('./imgs/weather/26.png'),infos:'¸¡³¾'})
               }else if(responseData.results[0].now['code'] == 27){
-              	 this.setState({images:require('./imgs/weather/27.png'),infos:'æ‰¬æ²™'})
+              	 this.setState({images:require('./imgs/weather/27.png'),infos:'ÑïÉ³'})
               }else if(responseData.results[0].now['code'] == 28){
-              	 this.setState({images:require('./imgs/weather/28.png'),infos:'æ²™å°˜æš´'})
+              	 this.setState({images:require('./imgs/weather/28.png'),infos:'É³³¾±©'})
               }else if(responseData.results[0].now['code'] == 29){
-              	 this.setState({images:require('./imgs/weather/29.png'),infos:'å¼ºæ²™å°˜æš´'})
+              	 this.setState({images:require('./imgs/weather/29.png'),infos:'Ç¿É³³¾±©'})
               }else if(responseData.results[0].now['code'] == 30){
-              	 this.setState({images:require('./imgs/weather/30.png'),infos:'é›¾'})
+              	 this.setState({images:require('./imgs/weather/30.png'),infos:'Îí'})
               }else if(responseData.results[0].now['code'] == 31){
-              	 this.setState({images:require('./imgs/weather/31.png'),infos:'éœ¾'})
+              	 this.setState({images:require('./imgs/weather/31.png'),infos:'ö²'})
               }else if(responseData.results[0].now['code'] == 32){
-              	 this.setState({images:require('./imgs/weather/32.png'),infos:'é£'})
+              	 this.setState({images:require('./imgs/weather/32.png'),infos:'·ç'})
               }else if(responseData.results[0].now['code'] == 33){
-              	 this.setState({images:require('./imgs/weather/33.png'),infos:'å¤§é£'})
+              	 this.setState({images:require('./imgs/weather/33.png'),infos:'´ó·ç'})
               }else if(responseData.results[0].now['code'] == 34){
-              	 this.setState({images:require('./imgs/weather/34.png'),infos:'é£“é£'})
+              	 this.setState({images:require('./imgs/weather/34.png'),infos:'ì«·ç'})
               }else if(responseData.results[0].now['code'] == 35){
-              	 this.setState({images:require('./imgs/weather/35.png'),infos:'çƒ­å¸¦é£æš´'})
+              	 this.setState({images:require('./imgs/weather/35.png'),infos:'ÈÈ´ø·ç±©'})
               }else if(responseData.results[0].now['code'] == 36){
-              	 this.setState({images:require('./imgs/weather/36.png'),infos:'é¾™å·é£'})
+              	 this.setState({images:require('./imgs/weather/36.png'),infos:'Áú¾í·ç'})
               }
 		  })
 		  .catch((error) => {
@@ -423,7 +415,7 @@ export default class FacebookExample extends Component {
 
 		this.lastBackPressed = Date.now();
 
-		ToastAndroid.show('å†æŒ‰ä¸€æ¬¡é€€å‡ºåº”ç”¨', ToastAndroid.SHORT);
+		ToastAndroid.show('ÔÙ°´Ò»´ÎÍË³öÓ¦ÓÃ', ToastAndroid.SHORT);
 
 		return true;
 
@@ -610,7 +602,7 @@ export default class FacebookExample extends Component {
     translucent:true,
       isshow: true,
       bars:'default',
-      day:'æ˜ŸæœŸ'+this.state.weekday[new Date().getDay()],
+      day:'ĞÇÆÚ'+this.state.weekday[new Date().getDay()],
       date:this.Gdate(new Date().getDate()),
       yearM:this.Gdate(new Date().getMonth()+1)+'/'+ new Date().getFullYear(),
     });
@@ -763,14 +755,14 @@ export default class FacebookExample extends Component {
 	            <TabNavigator tabBarStyle={{ height: 52,}} sceneStyle={{backgroundColor:'#fff'}}>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'home'}
-					title="æ¶ˆæ¯"
+					title="ÏûÏ¢"
 					renderIcon={() => <Image source={require('./imgs/newsx.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/news.png')} />}
 					selectedTitleStyle={{color:'#4385f4'}}
 					titleStyle={{color:'#aaa'}}
 					renderBadge={() =>
 						this.state.badgeNum === 0 ? null:
-						<View style={{alignItems:'center',justifyContent:'center',backgroundColor:'#F53B5C', borderRadius: 100, borderColor: '#d6d7da',paddingLeft:5,paddingRight:5,marginTop:8,position:'absolute',top:-6,right:-12}}>
+						<View style={{alignItems:'center',justifyContent:'center',backgroundColor:'#F53B5C', borderRadius: 100, borderColor: '#d6d7da',paddingLeft:5,paddingRight:5,marginTop:8}}>
 						  <Text style={{color: '#fff',fontSize:12}}>{this.state.badgeNum}</Text>
 						</View>
 					  }
@@ -780,7 +772,7 @@ export default class FacebookExample extends Component {
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Contacts'}
-					title="é€šè®¯å½•"
+					title="Í¨Ñ¶Â¼"
 					renderIcon={() => <Image source={require('./imgs/contacts.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/contact.png')} />}
 					selectedTitleStyle={{color:'#4385f4'}}
@@ -796,7 +788,7 @@ export default class FacebookExample extends Component {
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Application'}
-					title="åº”ç”¨"
+					title="Ó¦ÓÃ"
 					renderIcon={() => <Image source={require('./imgs/keypad.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/keypads.png')} />}
                     selectedTitleStyle={{color:'#4385f4'}}
@@ -808,7 +800,7 @@ export default class FacebookExample extends Component {
 				  </TabNavigator.Item>
 				  <TabNavigator.Item
 					selected={this.state.selectedTab === 'Setting'}
-					title="æˆ‘çš„"
+					title="ÎÒµÄ"
 					renderIcon={() => <Image source={require('./imgs/person.png')} />}
                     renderSelectedIcon={() => <Image source={require('./imgs/persons.png')} />}
                     selectedTitleStyle={{color:'#4385f4'}}
@@ -838,14 +830,14 @@ export default class FacebookExample extends Component {
                      {this.state.weathers ? <TouchableHighlight onPress={this.reloads.bind(this)} underlayColor='transparent' activeOpacity = {1} style={{position:'absolute',top:60,right:20,alignItems:'center',flexDirection:'column'}}>
 	                     <View style={{alignItems:'center',flexDirection:'column'}}>
 
-	                            <Text style={{fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.times}æ›´æ–°</Text>
+	                            <Text style={{fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.times}¸üĞÂ</Text>
 	                            {this.state.reloadsd ? <Icon name="ios-refresh-outline" color="#666"size={30}  /> : <ActivityIndicator style={{marginTop:5}} color="#666"/>}
 
 	                     </View>
                      </TouchableHighlight> : null}
                      {this.state.weathers ? <View style={{marginTop:20,flexDirection:'row',marginRight:18,width:Dimensions.get('window').width}}>
                          <View style={{flexDirection:'column',flex:1,alignItems:'flex-start',justifyContent:'flex-start',position:'absolute',top:10,left:15}}>
-                            <Text style={{marginBottom:5,fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>æ‰€åœ¨åŸå¸‚</Text>
+                            <Text style={{marginBottom:5,fontSize:12}} allowFontScaling={false} adjustsFontSizeToFit={false}>ËùÔÚ³ÇÊĞ</Text>
                             <Text style={{fontSize:16,fontFamily:'CourierNewPSMT',}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.location['name']}</Text>
                          </View>
                          <View style={{alignItems:'center',flexDirection:'column',justifyContent:'center',width:Dimensions.get('window').width}}>
@@ -853,7 +845,7 @@ export default class FacebookExample extends Component {
                                 <Image source={this.state.images} style={{width: 80, height: 80,}} />
                             </View>
                             <View style={{flexDirection:'row',alignItems:'center',justifyContent:'center', }}>
-                                <Text style={{fontSize:24,color:'#666'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.now['temperature']}Â° / {this.state.Datas.now['text']}</Text>
+                                <Text style={{fontSize:24,color:'#666'}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.Datas.now['temperature']}¡ã / {this.state.Datas.now['text']}</Text>
 
                             </View>
                          </View>
@@ -864,7 +856,7 @@ export default class FacebookExample extends Component {
                      {this.state.weathers ? <View style={{alignItems:'center',marginTop:10}}>
                        <TouchableHighlight onPress={this.ck.bind(this)} underlayColor='transparent' activeOpacity = {1}>
                         <View style={{alignItems:'center',}}>
-                          <Text style={{color:'#666',fontSize:12,}} allowFontScaling={false} adjustsFontSizeToFit={false}>æŸ¥çœ‹è¯¦æƒ…></Text>
+                          <Text style={{color:'#666',fontSize:12,}} allowFontScaling={false} adjustsFontSizeToFit={false}>²é¿´ÏêÇé></Text>
                         </View>
                         </TouchableHighlight>
                      </View> : null}
@@ -876,7 +868,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/rc.png')} style={{width: 26, height: 26,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      æ–°å»ºæ—¥ç¨‹
+							      ĞÂ½¨ÈÕ³Ì
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -889,7 +881,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/JB.png')} style={{width: 34, height: 34,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      åŠ ç­ç”³è¯·
+							      ¼Ó°àÉêÇë
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -902,7 +894,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/jia.png')} style={{width: 34, height: 34,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      è¯·å‡ç”³è¯·
+							      Çë¼ÙÉêÇë
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -915,7 +907,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/bx.png')} style={{width: 30, height: 30,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      æŠ¥é”€ç”³è¯·
+							      ±¨ÏúÉêÇë
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -928,7 +920,7 @@ export default class FacebookExample extends Component {
 							      <Image source={require('./imgs/out.png')} style={{width: 38, height: 38,}} />
 							   </View>
 							   <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-							      å¤–å‡ºç”³è¯·
+							      Íâ³öÉêÇë
 							   </Text>
 							   </View>
 							 </TouchableHighlight>
@@ -941,7 +933,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/bgsq.png')} style={{width: 34, height: 34,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   åŠå…¬ç”¨å“ç”³è¯·
+                   °ì¹«ÓÃÆ·ÉêÇë
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -954,7 +946,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/chuc.png')} style={{width: 30, height: 30,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   å‡ºå·®ç”³è¯·
+                   ³ö²îÉêÇë
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -967,7 +959,7 @@ export default class FacebookExample extends Component {
                    <Image source={require('./imgs/bc.png')} style={{width: 32, height: 32,}} />
                 </View>
                 <Text style={{marginTop:8,fontSize:12,}}allowFontScaling={false} adjustsFontSizeToFit={false}>
-                   è¡¥å¡ç”³è¯·
+                   ²¹¿¨ÉêÇë
                 </Text>
                 </View>
               </TouchableHighlight>
@@ -978,7 +970,6 @@ export default class FacebookExample extends Component {
 
 
 			      </Animated.View> : null}
-            <PassState isshow={true} navigator = {this.props.navigator} {...this.props}/>
 			   </View>
 
 

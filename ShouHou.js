@@ -18,6 +18,7 @@ import {
 
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Gonggaob from './Gonggaob';
 

@@ -20,7 +20,7 @@ import Add from './Add';
 import Netinfo from './Netinfo';
 import CalendarInfo from './CalendarInfo';
 import Token from './Token';
-
+import PassState from './PassState';
 export default class Calendar extends React.Component {
 
     constructor(props) {
@@ -341,6 +341,7 @@ export default class Calendar extends React.Component {
 				  <Icon name="ios-close-outline" color="#fff"size={36}  />
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请重新加载。</Text>
 	           </Animated.View> : <View></View>}
+      <PassState navigator = {this.props.navigator} {...this.props}/>       
 	  </View>
     )
     }

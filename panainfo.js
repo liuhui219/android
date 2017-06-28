@@ -35,6 +35,7 @@ import panLook from './panLook';
 import panainfos from './panainfos';
 import CheckBox from './CheckBox/CheckBox';
 import RNFetchBlob from 'react-native-fetch-blob'
+import PassState from './PassState';
 var array = [];
 var dataImpor = [];
 let aa=[];
@@ -725,7 +726,7 @@ export default class Newsb extends React.Component {
 						</TouchableOpacity>
 					 </View>
 			 </View></View> : null}
-
+       <PassState navigator = {this.props.navigator} {...this.props}/>
 		 </View>
 		)
 

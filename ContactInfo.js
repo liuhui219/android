@@ -18,7 +18,7 @@ import {
 import Communications from 'react-native-communications';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Token from './Token';
-
+import PassState from './PassState';
 export default class ContactInfo extends React.Component {
 
     constructor(props) {
@@ -230,6 +230,8 @@ export default class ContactInfo extends React.Component {
 			   <Animated.View style={{flexDirection:'row',ZIndex:100000,position:'absolute',top:75,left:(Dimensions.get('window').width-80)/2,alignItems:'center',justifyContent:'center',height:80,width:80,borderRadius:40, backgroundColor:'transparent',transform:[{translateY:this.state.trans.y},{translateX:this.state.trans.x} ],}} {...this._panResponder.panHandlers}>
 					     <Image source={this.state.img} style={{width: 80,height:80,borderRadius:40,}} />
 				</Animated.View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
+        
 	  </View>
     );
     }

@@ -13,7 +13,7 @@ import {
 	Image
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
-
+import PassState from './PassState';
 export default class Personal extends React.Component {
 	constructor(props) {
         super(props);

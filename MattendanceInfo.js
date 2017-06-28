@@ -18,7 +18,7 @@ import {
 	BackAndroid,
 	Image
 } from 'react-native';
-
+import PassState from './PassState';
 export default class MattendanceInfo extends Component {
 
 	render() {
@@ -46,6 +46,7 @@ export default class MattendanceInfo extends Component {
 				<View>
 
 				</View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 	     </View>
 	  )
 	}

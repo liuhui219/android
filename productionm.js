@@ -114,7 +114,7 @@ export default class Productionm extends Component {
 						datas: result.data,
 						datasx:result,
 					});
-					
+
 					fetch('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=get_shenhe_btn&access_token=' + data.data.token + '', {
 						  method: 'POST',
 						  headers: {
@@ -125,7 +125,7 @@ export default class Productionm extends Component {
 							'mm': 'Expense',
 							'aa':'auditqx',
 							'con_id': that.props.data.con_id,
-							'current_step': result.flow.current_step
+							'current_step': result.flow ? result.flow.current_step : 0
 						  })
 						})
 						.then(function (response) {
@@ -261,7 +261,7 @@ export default class Productionm extends Component {
 
 	}
 
-	_xmodalpoeple(visible){ 
+	_xmodalpoeple(visible){
 		 var that = this;
 		 this.setState({shows:true});
 		 Picker.init({

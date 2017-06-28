@@ -13,6 +13,7 @@ import {
 	Image
 } from 'react-native';
 import Gonggaoa from './Gonggaoa';
+import PassState from './PassState';
 export default class Gonggao extends React.Component {
 	constructor(props) {
         super(props);
@@ -69,6 +70,7 @@ export default class Gonggao extends React.Component {
 				<View style={{flex:1,backgroundColor:'#ececec',}}>
 				   <Gonggaoa   navigator = {this.props.navigator} {...this.props}/>
 				</View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 		   </View>
 		)
 	}

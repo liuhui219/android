@@ -9,11 +9,15 @@ import {
 	ToastAndroid,
 	ActivityIndicator,
 	TextInput,
+  Keyboard,
 	ScrollView,
+  KeyboardAvoidingView,
 	Dimensions,
 	BackAndroid,
 	Image
 } from 'react-native';
+import PassState from './PassState';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Communications from 'react-native-communications';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Token from './Token';
@@ -100,14 +104,16 @@ export default class ContactInfo extends React.Component {
 	   }
 
 	_send(){
-	    this.setState({
-			loaded: false,
-		});
+
+    Keyboard.dismiss();
 	    var that = this
 		if(this.trim(this.state.textaera) == ''){
 			ToastAndroid.show('评论内容不能为空！！！', ToastAndroid.SHORT)
 			return false;
 		}else{
+      this.setState({
+  			loaded: false,
+  		});
 		fetch('' + data.data.domain + '/index.php?app=Calendar2&m=CalendarApi&a=answer&access_token=' + data.data.token + '', {
 			  method: 'POST',
 			  headers: {
@@ -116,7 +122,7 @@ export default class ContactInfo extends React.Component {
 			 body: this.toQueryString({
 				'id': this.props.id,
 				'uid':this.props.uid,
-                'comment':this.state.textaera
+        'comment':this.state.textaera
 			})
 
 			})
@@ -219,21 +225,24 @@ export default class ContactInfo extends React.Component {
 						<Text allowFontScaling={false} adjustsFontSizeToFit={false} style={styles.loadingTitle}>加载中……</Text>
 					</View>
 				</View> : <View></View>}
-			<View style={{height:60,flexDirection:'row',paddingLeft:10,paddingRight:10, backgroundColor:'#ededed',justifyContent:'center',paddingTop:10, }}>
-			   <View  style={{flex:1,borderWidth:1,borderColor:'#4385f4',borderRadius:3, height:40, }}>
-			       <TextInput
-  				      onChangeText={(textaera) => this.setState({textaera})}
-    					  placeholderTextColor={'#999'}
-    					  style={{ color:'#666',fontSize:14, height:40,textAlignVertical:'bottom',     }}
-    					  placeholder='评论内容(必填)'
-    					  value={this.state.textaera}
-    					  underlineColorAndroid={'transparent'}
-  				   />
-			   </View>
-			   <TouchableOpacity onPress={this._send.bind(this)} style={{backgroundColor:'#4385f4',height:40,width:70,borderRadius:3,marginLeft:10,alignItems:'center',justifyContent:'center',}}>
-			       <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#fff',fontSize:16,}}>发送</Text>
-			   </TouchableOpacity>
-			</View>
+       <KeyboardAvoidingView behavior='padding'>
+  			<View style={{height:60,flexDirection:'row',paddingLeft:10,paddingRight:10, backgroundColor:'#ededed',justifyContent:'center',paddingTop:10, }}>
+  			   <View  style={{flex:1,borderWidth:1,borderColor:'#4385f4',borderRadius:3, height:40, }}>
+  			       <TextInput
+    				      onChangeText={(textaera) => this.setState({textaera})}
+      					  placeholderTextColor={'#999'}
+      					  style={{ color:'#666',fontSize:14, height:40,textAlignVertical:'bottom',     }}
+      					  placeholder='评论内容(必填)'
+      					  value={this.state.textaera}
+      					  underlineColorAndroid={'transparent'}
+    				   />
+  			   </View>
+  			   <TouchableOpacity onPress={this._send.bind(this)} style={{backgroundColor:'#4385f4',height:40,width:70,borderRadius:3,marginLeft:10,alignItems:'center',justifyContent:'center',}}>
+  			       <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#fff',fontSize:16,}}>发送</Text>
+  			   </TouchableOpacity>
+  			</View>
+       </KeyboardAvoidingView>
+       <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

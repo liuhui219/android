@@ -18,6 +18,7 @@ import {
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Operationa from './Operationa';
 import Operationb from './Operationb';
+import PassState from './PassState';
 import Operationc from './Operationc';
 import Icon from 'react-native-vector-icons/Ionicons';
 
@@ -103,7 +104,7 @@ export default class Operation extends React.Component {
 					 <Operationc navigator = {this.props.navigator} {...this.props}/>
 				  </View>
 				</ScrollableTabView>
-
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

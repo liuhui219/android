@@ -21,6 +21,7 @@ import Token from './Token';
 import Icon from 'react-native-vector-icons/Ionicons';
 import panainfo from './panainfo';
 import panainfoa from './panainfoa';
+import PassState from './PassState';
 import panainfob from './panainfob';
 import panainfoc from './panainfoc';
 var array = [];
@@ -216,6 +217,7 @@ export default class pan extends React.Component {
 						 </TouchableHighlight> : null}
 					  </View>
 					</View>
+          <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

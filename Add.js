@@ -10,13 +10,14 @@ import {
 	ScrollView,
 	ToastAndroid,
 	TextInput,
+  KeyboardAvoidingView,
 	Animated,
 	Dimensions,
 	BackAndroid,
 	StatusBar,
 	Image
 } from 'react-native';
-
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker';
 import Token from './Token';
@@ -399,7 +400,7 @@ export default class Add extends Component {
     render() {
     return (
 	   <View style={{flex:1,flexDirection:'column',}}>
-	             
+
                 <View style={styles.card}>
 				  <View style={{flex:1,justifyContent:'center'}}>
 							 <TouchableOpacity onPress={this._pressButton.bind(this)}>
@@ -423,6 +424,7 @@ export default class Add extends Component {
 				  </View>
 				</View>
 				<Netinfo  {...this.props}/>
+        <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
 				<ScrollView style={{flex:1,flexDirection:'column',backgroundColor:'#ececec'}} >
 
 				    <View style={{flexDirection:'row',height:45,backgroundColor:'#fff',alignItems:'center',justifyContent:'center',borderTopWidth:1,borderBottomWidth:1,borderColor:'#dcdcdc',marginTop:15,paddingLeft:10,}}>
@@ -544,14 +546,16 @@ export default class Add extends Component {
 					<TouchableOpacity activeOpacity={0.8} onPress={this._tijiao.bind(this)}   style={{marginTop:30,backgroundColor:'#4385f4',marginLeft:20,marginRight:20,height:50,alignItems:'center',justifyContent:'center',borderRadius:5,}}>
 					     <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#fff',fontSize:16,}}>提交</Text>
 					</TouchableOpacity>
-					</ScrollView>
 
+					</ScrollView>
+         </KeyboardAvoidingView>
 
 
 				{this.state.statu ? <Animated.View style={{opacity: this.state.fadeAnim,padding:10,width:200,backgroundColor:'rgba(23, 22, 22, 0.7)',justifyContent:'flex-start',alignItems:'center',position:'absolute',top:(Dimensions.get('window').height-150)/2,left:(Dimensions.get('window').width-200)/2,}}>
 				  <Icon name="ios-close-outline" color="#fff"size={36}  />
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请重新加载。</Text>
 	           </Animated.View> : <View></View>}
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

@@ -24,6 +24,7 @@ import SelectPoeple from './SelectPoeple';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFS from 'react-native-fs';
+import PassState from './PassState';
 import Picker from 'react-native-picker';
 var dataImpor = [];
 let aa=[];
@@ -132,7 +133,7 @@ export default class Bxm extends Component {
 						datas: result.data,
 						datasx:result,
 					});
-					
+
 					fetch('' + data.data.domain + '/index.php?app=Home&m=AuditApi&a=get_shenhe_btn&access_token=' + data.data.token + '', {
 						  method: 'POST',
 						  headers: {
@@ -143,7 +144,7 @@ export default class Bxm extends Component {
 							'mm': 'Expense',
 							'aa':'auditqx',
 							'con_id': that.props.data.con_id,
-							'current_step': result.flow.current_step
+							'current_step': result.flow ? result.flow.current_step : 0
 						  })
 						})
 						.then(function (response) {
@@ -267,7 +268,7 @@ export default class Bxm extends Component {
 
 	}
 
-	_xmodalpoeple(visible){ 
+	_xmodalpoeple(visible){
 		 var that = this;
 		 this.setState({shows:true});
 		 Picker.init({
@@ -822,6 +823,7 @@ showActionSheet() {
 							  <Icon name="ios-close-outline" color="#fff"size={36}  />
 							  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 				            </Animated.View> : null}
+                    <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
 
@@ -895,7 +897,8 @@ showActionSheet() {
 							  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 				            </Animated.View> : null}
 							{this.state.shows ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
-					   </Modal>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
+             </Modal>
 
 					</View>
 
@@ -930,12 +933,14 @@ showActionSheet() {
 							<View style={{flex:1}}>
                                <SelectPoeple _select={this._select.bind(this)}/>
 							</View>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
 					{this.state.statu ? <Animated.View style={{ padding:10,width:200,backgroundColor:'rgba(23, 22, 22, 0.7)',justifyContent:'flex-start',alignItems:'center',position:'absolute',top:(Dimensions.get('window').height-150)/2,left:(Dimensions.get('window').width-200)/2,}}>
 					  <Icon name="ios-close-outline" color="#fff"size={36}  />
 					  <Text style={{fontSize:16,color:'#fff',marginTop:20,}} allowFontScaling={false} adjustsFontSizeToFit={false}>{this.state.infos}</Text>
 		            </Animated.View> : null}
+          <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

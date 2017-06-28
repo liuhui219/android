@@ -16,7 +16,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Add from './Add';
-
+import PassState from './PassState';
 import CalendarInfo from './CalendarInfo';
 import Token from './Token';
 export default class CalendarTj extends React.Component {
@@ -380,6 +380,7 @@ export default class CalendarTj extends React.Component {
 				  <Icon name="ios-close-outline" color="#fff"size={36}  />
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请重新加载。</Text>
 	           </Animated.View> : <View></View>}
+      <PassState navigator = {this.props.navigator} {...this.props}/>       
 	  </View>
     )
     }

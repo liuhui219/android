@@ -26,6 +26,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import CheckBox from 'react-native-check-box';
 import Picker from 'react-native-picker';
 import ImagePicker from 'react-native-image-picker';
+import PassState from './PassState';
 import AllCustomer from './AllCustomer';
 import AllCustomer1 from './AllCustomer1';
 import AllCustomer2 from './AllCustomer2';
@@ -201,7 +202,7 @@ export default class CreatBX extends React.Component {
     cc.length = 0;
     checks.length = 0;
     flog = false;
-    this.setState({selDatas:[],}) 
+    this.setState({selDatas:[],})
     fetch('' + data.data.domain + '/index.php?app=Account&m=ExpenseApi&a=userpj&uid='+data.data.uid+'&access_token=' + data.data.token + '')
       .then((response) => response.json())
       .then((responseData) => {
@@ -1023,6 +1024,7 @@ export default class CreatBX extends React.Component {
                                 <AllCustomer2  _selectc={this._selectc.bind(this)}/>
       								    </View>
         								</ScrollableTabView>
+                        <PassState navigator = {this.props.navigator} {...this.props}/>
            					   </Modal>
                        <Modal
           					      animationType={"slide"}
@@ -1048,6 +1050,7 @@ export default class CreatBX extends React.Component {
           							<View style={{flex:1,}}>
                             <ObjectList  _selectxm={this._selectxm.bind(this)}/>
           							</View>
+                        <PassState navigator = {this.props.navigator} {...this.props}/>
           					   </Modal>
                        <Modal
           					      animationType={"slide"}
@@ -1073,9 +1076,12 @@ export default class CreatBX extends React.Component {
           							<View style={{flex:1,}}>
                             <ShouHou  _selectsh={this._selectsh.bind(this)}/>
           							</View>
+                        <PassState navigator = {this.props.navigator} {...this.props}/>
           					   </Modal>
+                       <PassState navigator = {this.props.navigator} {...this.props}/>
          					   </Modal>
       							</ScrollView>
+                    <PassState navigator = {this.props.navigator} {...this.props}/>
       					   </Modal>
         					</ScrollView>
                   {this.state.shows ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
@@ -1091,6 +1097,7 @@ export default class CreatBX extends React.Component {
           				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请点击重试。</Text>
                            </TouchableOpacity>
           	           </View> : <View></View>}
+                       <PassState navigator = {this.props.navigator} {...this.props}/>
               </View>
            	)
 	}

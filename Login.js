@@ -24,7 +24,7 @@ import {
 import Token from './Token';
 
 var dataImpor = [];
-var REQUEST_URL = 'http://www.linksame.com/OAuth/MobilePcdGant/authorize';
+var REQUEST_URL = 'http://www.linksame.com/OAuth/MobilePcdGant/loginOut?clearMid=1';
 import AppMain from './main';
 import Icon from 'react-native-vector-icons/Ionicons';
 var WEBVIEW_REF = 'webview';
@@ -32,7 +32,7 @@ export class Login extends Component {
 	constructor(props) {
         super(props);
 		this.state = {
-		   url:'http://www.linksame.com/OAuth/MobilePcdGant/authorize',
+		   url:'http://www.linksame.com/OAuth/MobilePcdGant/loginOut?clearMid=1',
 		   isshow:false,
 		   datas:'',
 		   isfalse:true,

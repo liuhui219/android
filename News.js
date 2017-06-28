@@ -19,6 +19,7 @@ import {
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
 import Newsa from './Newsa';
+import PassState from './PassState';
 import Newsb from './Newsb';
 import Icon from 'react-native-vector-icons/Ionicons';
 let array = []
@@ -101,7 +102,7 @@ export default class News extends React.Component {
 					 <Newsb />
 				  </View>
 				</ScrollableTabView>
-
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

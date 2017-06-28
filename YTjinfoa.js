@@ -20,6 +20,7 @@ import {
 	ListView,
 } from 'react-native';
 import Token from './Token';
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ImageViewer from 'react-native-image-zoom-viewer';
 import RNFS from 'react-native-fs';
@@ -214,9 +215,10 @@ showActionSheet() {
 										</View>
 									</TouchableOpacity>
 					            </Animated.View>
+                      <PassState navigator = {this.props.navigator} {...this.props}/>
                     </Modal>
 					</View>
-
+            <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

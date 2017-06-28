@@ -18,6 +18,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Token from './Token';
 import Infoa from './Infoa';
+import PassState from './PassState';
 var dataImpor = [];
 export default class Info extends Component {
 
@@ -315,7 +316,7 @@ export default class Info extends Component {
 					</View>
 
 				</ScrollView>}
-
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

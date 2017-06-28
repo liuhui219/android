@@ -11,6 +11,8 @@ import {
 	ScrollView,
 	ActivityIndicator,
 	InteractionManager,
+  KeyboardAvoidingView,
+  Keyboard,
 	Dimensions,
   DatePickerAndroid,
 	TimePickerAndroid,
@@ -24,6 +26,7 @@ import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-v
 import Token from './Token';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker';
+import PassState from './PassState';
 import SelectPoeple from './SelectPoeple';
 import ZC from './ZC';
 var array = [];
@@ -197,6 +200,7 @@ export default class SQoffice extends React.Component {
   		 return str.replace(/(^\s*)|(\s*$)/g, ""); 		　　
   	}
     _submit(){
+      Keyboard.dismiss();
       var that = this;
       if(this.state.ckname == '请选择'){
   			ToastAndroid.show('选择资产名称', ToastAndroid.SHORT)
@@ -269,7 +273,7 @@ export default class SQoffice extends React.Component {
                    </TouchableOpacity>
     						  </View>
 					    </View>
-
+              <KeyboardAvoidingView behavior='padding' style={{flex:1}}>
     					<ScrollView style={{flexDirection:'column',backgroundColor:'#ececec',flex:1}}>
                 <View style={{flexDirection:'row',height:50,backgroundColor:'#fff',alignItems:'center',justifyContent:'center',borderBottomWidth:1,borderColor:'#dcdcdc',paddingLeft:10,marginTop:15}}>
                    <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#333',fontSize:14}}>
@@ -327,7 +331,7 @@ export default class SQoffice extends React.Component {
                </View>
 
     					</ScrollView>
-
+              </KeyboardAvoidingView>
               <Modal
                  animationType={"slide"}
                  transparent={false}
@@ -352,6 +356,7 @@ export default class SQoffice extends React.Component {
                <View style={{flex:1,}}>
                    <ZC  _selectxm={this._selectxm.bind(this)}/>
                </View>
+               <PassState navigator = {this.props.navigator} {...this.props}/>
               </Modal>
 
               {this.state.shows ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
@@ -367,6 +372,7 @@ export default class SQoffice extends React.Component {
       				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请点击重试。</Text>
                        </TouchableOpacity>
       	           </View> : <View></View>}
+                   <PassState navigator = {this.props.navigator} {...this.props}/>
              </View>
            	)
 	}

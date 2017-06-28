@@ -19,6 +19,7 @@ import {
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
 import Icon from 'react-native-vector-icons/Ionicons';
+import PassState from './PassState';
 var array = [];
 var aa=[];
 export default class ProjectM extends React.Component {
@@ -148,6 +149,7 @@ export default class ProjectM extends React.Component {
 
                   </View>
         					</View>
+                  <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

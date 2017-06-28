@@ -10,7 +10,7 @@ import {
 	Image,
 	Dimensions,
 } from 'react-native';
-
+import PassState from './PassState';
 import Token from './Token';
 export default class About extends React.Component {
 
@@ -88,6 +88,7 @@ export default class About extends React.Component {
                        <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:12,marginTop:5,}} allowFontScaling={false}>邻盛管家-linksame版权所有</Text>
 				 </View>
 			</View>
+      <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }

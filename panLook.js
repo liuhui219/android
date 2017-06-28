@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState'; 
 import Icon from 'react-native-vector-icons/Ionicons';
 import RNFS from 'react-native-fs';
 import OpenFile from 'react-native-doc-viewer';
@@ -168,6 +169,7 @@ export default class panLook extends React.Component {
 								</View>}
 						  </View>
 					</View>
+          <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

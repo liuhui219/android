@@ -42,8 +42,10 @@ class rootApp extends Component {
     );
   }
 
-  configureScene(route, routeStack) {
-    return Navigator.SceneConfigs.PushFromRight;
+  configureScene(route){
+    var conf = Navigator.SceneConfigs.HorizontalSwipeJump;
+    conf.gestures = null;
+    return conf;
   }
 
   render() {
@@ -53,7 +55,7 @@ class rootApp extends Component {
 		    backgroundColor={'#4385f4'}
   			animated = {true}
   			barStyle="light-content"
-  			translucent={true}     
+  			translucent={true}
        />
         <Navigator
           ref='navigator'

@@ -20,6 +20,7 @@ import {
 	Platform,
 	Image
 } from 'react-native';
+import PassState from './PassState';
 import YTjinfo from './YTjinfo';
 export default class YTj extends Component {
 
@@ -70,6 +71,7 @@ export default class YTj extends Component {
 				<View style={{flex:1,backgroundColor:'#fafafa'}}>
 				    <YTjinfo navigator = {this.props.navigator} {...this.props}/>
 				</View>
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 		 </View>
 	 )
 	}

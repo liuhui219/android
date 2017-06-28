@@ -18,7 +18,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import ContactInfo from './ContactInfo';
-
+import Safe from './Safety/index';
 import {Login} from './Login';
 import About from './About';
 import Cache from './Cache';
@@ -66,11 +66,14 @@ export default class Setting extends React.Component {
 		storage.remove({
 			key: 'loginState'
 		});
+    storage.remove({
+       key: 'password'
+    });
 		const {navigator} = this.props;
 				navigator.resetTo({
 				  component: Login,
 				  name: 'Login'
-		        });
+		    });
 	}
 
 	about(){
@@ -85,6 +88,16 @@ export default class Setting extends React.Component {
 
         }
 	}
+
+  safe(){
+    var { navigator } = this.props;
+        if(navigator) {
+            this.props.navigator.push({
+                name: 'Safe',
+                component: Safe
+            })
+        }
+  }
 
 
 	update(){
@@ -211,6 +224,15 @@ export default class Setting extends React.Component {
 									    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
 
 										   <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,marginLeft:5,}}>关于邻盛</Text>
+										</View>
+										<Icon name="ios-arrow-forward" color="#ccc"size={27}  />
+									</View>
+							   </TouchableNativeFeedback>
+                 <TouchableNativeFeedback onPress={this.safe.bind(this)} >
+									<View style={{flex:1,flexDirection:'row',height:60,alignItems:'center',padding:15, borderBottomWidth:1,borderColor:'#ececec',justifyContent:'space-between',}}>
+									    <View style={{flexDirection:'row',justifyContent:'center',alignItems:'center',}}>
+
+										   <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,marginLeft:5,}}>账号与安全</Text>
 										</View>
 										<Icon name="ios-arrow-forward" color="#ccc"size={27}  />
 									</View>

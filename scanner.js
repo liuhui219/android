@@ -21,6 +21,7 @@ import {
 } from 'react-native';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState';
 import Webviewst from './Webviewst';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Barcode from 'react-native-smart-barcode';
@@ -203,6 +204,7 @@ export default class Scanner extends React.Component {
 						 </TouchableOpacity>
 						</View>
 					  </View> : null}
+            <PassState navigator = {this.props.navigator} {...this.props}/>
 				</View>
            	)
 	}

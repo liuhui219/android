@@ -21,6 +21,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker'
 import Token from './Token';
+import PassState from './PassState';
 import Netinfo from './Netinfo';
 
 
@@ -48,29 +49,29 @@ export default class Webviews extends Component {
 		 })
 
 	  }
-	  
-    onBackAndroid(){ 
+
+    onBackAndroid(){
         var { navigator } = this.props;
         if (this.state.canBack) {
            this.refs[WEBVIEW_REF].goBack();
 		   return true;
         } else {
-           if(navigator) { 
+           if(navigator) {
 				navigator.pop();
 				return true;
 			}
 			return false;
-        } 
+        }
 	};
 
 
 	_pressButton() {
-       var { navigator } = this.props; 
-	   if(navigator) { 
+       var { navigator } = this.props;
+	   if(navigator) {
 			navigator.pop();
 			return true;
 		}
-		return false; 
+		return false;
     }
 
 	componentWillUnmount() {
@@ -78,7 +79,7 @@ export default class Webviews extends Component {
 	    BackAndroid.removeEventListener('hardwareBackPress', this.onBackAndroid);
 
 	}
-	onNavigationStateChange(navState) { 
+	onNavigationStateChange(navState) {
         this.setState({canBack: navState.canGoBack})
 		this.refs[WEBVIEW_REF].postMessage(JSON.stringify(data));
 		if(navState.url.indexOf("/home")!=-1){
@@ -214,7 +215,7 @@ export default class Webviews extends Component {
 						<Text allowFontScaling={false} adjustsFontSizeToFit={false} style={styles.loadingTitle}>正在加载...</Text>
 					</View>
 				</View> : <View></View>}
-
+       <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
 
     );

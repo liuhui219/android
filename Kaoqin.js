@@ -26,6 +26,7 @@ import {
 import Icon from 'react-native-vector-icons/Ionicons';
 import Token from './Token';
 import Bcard from './Bcard';
+import PassState from './PassState';
 import TJ from './TJ';
 
 import DeviceInfo from 'react-native-device-info';
@@ -420,6 +421,7 @@ export default class ContactInfo extends React.Component {
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请点击重试。</Text>
                  </TouchableOpacity>
 	           </Animated.View> : <View></View>}
+             <PassState navigator = {this.props.navigator} {...this.props}/> 
 	  </View>
     );
     }

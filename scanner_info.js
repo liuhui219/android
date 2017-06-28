@@ -23,6 +23,7 @@ import {
 } from 'react-native';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker';
 var array = [];
@@ -610,8 +611,10 @@ export default class scanner_info extends React.Component {
                             </View>
                           </ScrollView>
                           {this.state.shows ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
+                        <PassState navigator = {this.props.navigator} {...this.props}/>
                        </Modal>
           					</View>
+                    <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

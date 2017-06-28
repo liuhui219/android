@@ -63,32 +63,32 @@ export default class Home extends React.Component {
     }
 
 
-	componentWillReceiveProps(nextProps) { 
+	componentWillReceiveProps(nextProps) {
 		if(nextProps.bgCount == 0 && nextProps.xxCount == 0 && nextProps.ywCount == 0){
 			return false;
 		}else if(nextProps.bgCount != undefined && nextProps.xxCount == undefined && nextProps.ywCount == undefined){
 			this.setState({
 			  isNull_a:nextProps.bgCount,
-			  data_a:nextProps.Contents, 
+			  data_a:nextProps.Contents,
 			})
 
 		}else if(nextProps.bgCount == undefined && nextProps.xxCount != undefined && nextProps.ywCount == undefined){
 			this.setState({
 			  isNull: nextProps.xxCount,
-			  data:nextProps.Contents, 
+			  data:nextProps.Contents,
 			})
 
 		}else if(nextProps.bgCount == undefined && nextProps.xxCount == undefined && nextProps.ywCount != undefined){
 			this.setState({
 			  isNull_b: nextProps.ywCount,
-			  data_b:nextProps.Contents, 
+			  data_b:nextProps.Contents,
 			})
 
 		}else{
 			this.setState({
 			  isNull_b: nextProps.ywCount,
 			  isNull_a: nextProps.bgCount,
-			  isNull: nextProps.xxCount,  
+			  isNull: nextProps.xxCount,
 			})
 
 		}
@@ -138,10 +138,10 @@ export default class Home extends React.Component {
 					'status': -1,
 				  })
 				})
-				.then(function (response) {  
+				.then(function (response) {
                     return response.json();
 				})
-				.then(function (result) {  
+				.then(function (result) {
 				   that.props.totalnums.bind(that,result.count,true)();
 					  that.setState({
 						   isNull:result.count,
@@ -149,8 +149,8 @@ export default class Home extends React.Component {
                            data:null,
 					  })
 
-		              
-                      if(result.count>0){ 
+
+                      if(result.count>0){
 						that.setState({
 						   data:result.data[result.data.length-1].content,
 						   isRefreshing:false,
@@ -248,7 +248,7 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			 
+
             navigator.push({
                 name: 'News',
                 component: News,
@@ -264,7 +264,7 @@ export default class Home extends React.Component {
                     // }
                 // }
             })
-			 
+
         }
 	}
 
@@ -272,7 +272,7 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			 
+
             navigator.push({
                 name: 'Approval',
                 component: Approval,
@@ -285,7 +285,7 @@ export default class Home extends React.Component {
                     // }
                 // }
             })
-			 
+
         }
 	}
 
@@ -293,7 +293,7 @@ export default class Home extends React.Component {
 		let _this = this;
 		var { navigator } = this.props;
         if(navigator) {
-			 
+
             navigator.push({
                 name: 'Operation',
                 component: Operation,
@@ -306,7 +306,7 @@ export default class Home extends React.Component {
                     // }
                 // }
             })
-			 
+
         }
 	}
 
@@ -365,7 +365,7 @@ export default class Home extends React.Component {
 							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>消息</Text>
-									  {this.state.data ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data}</Text> : <Text style={{color:'#ccc'}}></Text>}
+									  {this.state.data ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',color:'#999'}}>{this.state.data}</Text> : <Text style={{color:'#ccc'}}></Text>}
 								   </View>
 								   <View style={{width:50,height:50,alignItems:'center',justifyContent:'center'}}>
 									 <View style={{backgroundColor:'#F53B5C',borderRadius:18,}}>
@@ -374,7 +374,7 @@ export default class Home extends React.Component {
 								   </View>
 							   </View>
 							 </View>
-						   </TouchableOpacity  >
+						   </TouchableOpacity>
 
 					   </View>
 					   <View  style={{flex:1,flexDirection:'row',alignItems:'center', backgroundColor:'#fff',}}>
@@ -389,7 +389,7 @@ export default class Home extends React.Component {
                                  <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>办公审批</Text>
-									  {this.state.data_a ? <Text numberOfLines={1} allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data_a}</Text> : <Text style={{color:'#ccc'}}></Text>}
+									  {this.state.data_a ? <Text numberOfLines={1} allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',color:'#999'}}>{this.state.data_a}</Text> : <Text style={{color:'#ccc'}}></Text>}
 								   </View>
 								   <View style={{width:50,height:50,alignItems:'center',justifyContent:'center'}}>
 									 <View style={{backgroundColor:'#F53B5C',borderRadius:18,}}>
@@ -399,7 +399,7 @@ export default class Home extends React.Component {
 							   </View>
 
 							 </View>
-						   </TouchableOpacity  >
+						   </TouchableOpacity>
 					   </View>
 					   <View  style={{flex:1,flexDirection:'row',alignItems:'center', backgroundColor:'#fff',}}>
 					       <TouchableOpacity
@@ -414,7 +414,7 @@ export default class Home extends React.Component {
 							   <View style={{marginLeft:10,flex:1,flexDirection:'row',borderBottomWidth:1, borderColor:'#ececec', height: 70,paddingTop:2,paddingBottom:10, }}>
 								   <View style={{flex:1,flexDirection:'column', height: 70,paddingTop:8,paddingBottom:10, }}>
 									  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{ fontSize:18,color:'#666'}}>业务审批</Text>
-									  {this.state.data_b ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',}}>{this.state.data_b}</Text> : <Text style={{color:'#ccc'}}></Text>}
+									  {this.state.data_b ? <Text allowFontScaling={false} adjustsFontSizeToFit={false} numberOfLines={1} style={{ fontSize:13,paddingTop:6,flex:1,overflow:'hidden',color:'#999'}}>{this.state.data_b}</Text> : <Text style={{color:'#ccc'}}></Text>}
 								   </View>
 								   <View style={{width:50,height:50,alignItems:'center',justifyContent:'center'}}>
 									 <View style={{backgroundColor:'#F53B5C',borderRadius:18,}}>
@@ -423,7 +423,7 @@ export default class Home extends React.Component {
 								   </View>
 							   </View>
 							 </View>
-						   </TouchableOpacity  >
+						   </TouchableOpacity>
 					   </View>
 					   <View  style={{flex:1,flexDirection:'row',alignItems:'center', backgroundColor:'#fff',}}>
 					       <TouchableOpacity
@@ -440,7 +440,7 @@ export default class Home extends React.Component {
 								  <Text style={{ fontSize:13,paddingTop:6,}}> </Text>
 							   </View>
 							 </View>
-						   </TouchableOpacity  >
+						   </TouchableOpacity>
 					   </View>
 
 
@@ -460,8 +460,7 @@ export default class Home extends React.Component {
 						 <View><Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{color:'#4385f4',fontSize:16}}>确定</Text></View>
 						</TouchableOpacity>
 					 </View>
-			 </View></View> : null}
-					</View>
+			 </View></View> : null}</View>
 		)
 	}
 

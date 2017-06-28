@@ -23,6 +23,7 @@ import {
 } from 'react-native';
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Picker from 'react-native-picker';
 import ImagePicker from 'react-native-image-picker';
@@ -104,7 +105,7 @@ export default class cameraCard extends React.Component {
             this.camera = cam;
           }}
           style={styles.preview}
-          aspect={Camera.constants.Aspect.fill}   
+          aspect={Camera.constants.Aspect.fill}
 
         >
 
@@ -769,7 +770,7 @@ export default class cameraCard extends React.Component {
           	           </View> : <View></View>}
                  {this.state.showsk ? <View style={{width:Dimensions.get('window').width,height:Dimensions.get('window').height,backgroundColor:'rgba(107, 107, 107, 0.43)',position:'absolute',top:0,left:0}}></View> : null}
 
-
+                 <PassState navigator = {this.props.navigator} {...this.props}/>
 
      					   </Modal>
 
@@ -880,7 +881,9 @@ export default class cameraCard extends React.Component {
                     </View>
                   </View>
     							</ScrollView> : null}
+                  <PassState navigator = {this.props.navigator} {...this.props}/>
     					   </Modal>
+                 <PassState navigator = {this.props.navigator} {...this.props}/>
 	            </View>
            	)
 	}

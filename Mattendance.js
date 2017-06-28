@@ -29,6 +29,7 @@ import {
   Geolocation
 } from 'react-native-baidu-map';
 import ImagePicker from 'react-native-image-picker';
+import PassState from './PassState';
 import YTj from './YTj';
 import Scustomera from './Scustomera';
 import Scustomerb from './Scustomerb';
@@ -617,6 +618,7 @@ render() {
 								      </View> : null}
 								</ScrollableTabView>
 						  </View>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
                     <View>
@@ -646,6 +648,7 @@ render() {
 							<View style={{flex:1,}}>
 							     <Scustomerd id={this.state.ida} _selectl={this._selectl.bind(this)} />
 							</View>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
 					</View>
                     <View>
@@ -729,6 +732,7 @@ render() {
 								</View>
 							   </TouchableNativeFeedback>
 						  </View>
+              <PassState navigator = {this.props.navigator} {...this.props}/>
 					   </Modal>
                     </View>
 
@@ -749,6 +753,7 @@ render() {
 				  <Text allowFontScaling={false} adjustsFontSizeToFit={false} style={{fontSize:16,color:'#fff',marginTop:20,}}>加载失败，请点击重试。</Text>
                  </TouchableOpacity>
 	           </Animated.View> : <View></View>}
+        <PassState navigator = {this.props.navigator} {...this.props}/>
 		</View>
 	)
   }

@@ -19,7 +19,7 @@ import {
 
 import ScrollableTabView, { DefaultTabBar, } from 'react-native-scrollable-tab-view';
 import Token from './Token';
-
+import PassState from './PassState';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class KqTj extends React.Component {
@@ -188,7 +188,7 @@ export default class KqTj extends React.Component {
 					 }) : null}
 				  </ScrollView>
 				</ScrollableTabView>
-
+       <PassState navigator = {this.props.navigator} {...this.props}/>
 	  </View>
     );
     }
